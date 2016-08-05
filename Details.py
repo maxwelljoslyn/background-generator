@@ -589,7 +589,7 @@ def getHealthCondition(roll):
     elif roll == 28:
         return "Severe hemorrhaging: if wounded, the character will bleed 3 extra HP per round. If bandages are used, character's wounds must be bound four times in order to stop the bleeding."
     elif roll == 29:
-        return "Blindness: character cannot see at all, and will be unable to sense light altogether. Chief among the consequences is that all attacks are treated as if attacking invisible creatures (-8 normally, -4 if someone spends their turn helping to direct your strikes) and that all missile attacks which miss can cause friendly fire, in any direction."
+        return "Blindness: character cannot see at all, and is altogether unable to sense light. Chief among the consequences is that all attacks are treated as if attacking invisible creatures (-8 normally, -4 if someone spends their turn helping to direct your strikes) and that all missile/thrown attacks which miss can cause friendly fire, in any direction."
     else:
         return "Crippled legs: while the character's legs appear whole and undamaged, they are in fact entirely without feeling or strength. The character cannot walk under their own power."
 
