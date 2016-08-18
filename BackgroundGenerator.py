@@ -3,6 +3,8 @@ from decimal import *
 from Details import *
 from math import floor
 
+import MageSpells
+
 getcontext().prec = 3
 
 def advantageMagnitude(abiScore):
@@ -138,7 +140,7 @@ def main():
     c = PC()
     testing = True
     if testing:
-        c.pClass = "Fighter"
+        c.pClass = "Mage"
         c.Strength, c.Dexterity, c.Wisdom, c.Constitution, c.Intelligence, c.Charisma = 10,10,10,10,10,10
         c.sex = "Male"
         c.name = "Foobar"
@@ -264,6 +266,13 @@ def main():
         f.write("Above " + str(eMin3) + " but less than or equal to the maximum of " + str(c.maxEncumbrance) + " lbs, AP penalty is -4.")
         f.write("\n")
         f.write("Above that, no movement is possible, regardless of additional AP.")
+
+        if c.pClass == "Mage":
+            f.write("\n\n")
+            f.write("Pick one of these first-level spells:\n")
+            for p in MageSpells.getPickableSpells(c.Intelligence):
+                f.write(p)
+                f.write('\n')
 
 if __name__ == "__main__":
     main()
