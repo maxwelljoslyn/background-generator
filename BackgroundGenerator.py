@@ -2,7 +2,6 @@ from random import *
 from decimal import *
 from Details import *
 from math import floor
-from sys import maxsize
 
 getcontext().prec = 3
 
