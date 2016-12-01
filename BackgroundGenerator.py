@@ -83,7 +83,7 @@ def calcHeightWeight(player):
     return (height, weight)
     
 def calcMaxEncumbrance(player):
-    idealEncumbranceTable = {x:(100 + 5 * x) for x in range(3,19)}
+    idealEncumbranceTable = {x:(65 + 5 * x) for x in range(3,19)}
     proportion = 0
     if player.sex == "Male":
         proportion = player.weight / baseMaleWeight
@@ -96,10 +96,10 @@ def calcMaxEncumbrance(player):
 def encumbrancePenaltyCutoffs(maxEnc):
     """Calculate the encumbrance levels at which character suffers reduced Action Points."""
     maxEnc = Decimal(maxEnc)
-    nopenalty =   Decimal(0.6) * maxEnc
-    min1penalty = Decimal(0.7) * maxEnc
-    min2penalty = Decimal(0.8) * maxEnc
-    min3penalty = Decimal(0.9) * maxEnc
+    nopenalty =   Decimal(0.4) * maxEnc
+    min1penalty = Decimal(0.55) * maxEnc
+    min2penalty = Decimal(0.7) * maxEnc
+    min3penalty = Decimal(0.85) * maxEnc
     # between the -3 penalty cutoff and maxEnc, the penalty is -4
     return nopenalty, min1penalty, min2penalty, min3penalty
 
