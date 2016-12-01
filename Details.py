@@ -733,5 +733,5 @@ def detailAgility(magnitude, player):
         bodyPart = choice(["hip","shoulder"])
         result = "Character can dislocate " + poss + " " + whichSide + " " + bodyPart + " at will, though doing so causes 1d4+1 damage."
     else:
-        result = "Character can tightrope walk as if climbing an ordinary wall; when doing so, " + subj + " is treated as a thief of equal level."
+        result = "Character can climb poles and free-hanging ropes, and walk tightropes, as if climbing an ordinary wall."
     return result
