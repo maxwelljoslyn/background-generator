@@ -253,7 +253,7 @@ def main():
             oldWeight = c.weight
             adjustedWeight = c.weight * c.weightMult
             diff = adjustedWeight - oldWeight
-            f.write("Weight: " + str(adjustedWeight) + "lbs; " + str(diff) + " lbs of this is fat, and counts against encumbrance!")
+            f.write("Weight: " + str(adjustedWeight) + " lbs; " + str(diff) + " lbs of this is fat, and counts against encumbrance!")
             f.write("\n\n")
         f.write("Encumbrance Information:")
         f.write("\n")
