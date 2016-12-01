@@ -24,14 +24,14 @@ def detailFeats(magnitude, player):
     elif magnitude <= -11:
         result = "Poor endurance. Character cannot run for more than 1 round at a time, no matter " + poss + " Constitution score."
     elif magnitude <= -10:
-        result = "One-handed weapons must be used two-handed; two-handed weapons suffer the non-proficiency penalty (if already nonproficient with a given weapon, increase its penalty by 50%, round down.)"
+        result = "One-handed melee weapons must be used two-handed (even daggers); two-handed melee weapons suffer the non-proficiency penalty (if already nonproficient with a given weapon, increase its penalty by 50%, round down.)"
     elif magnitude <= -9:
         result = "Encumbrance limits reduced by " + str(bigPercent) + "%."
         player.maxEncumbrance = player.maxEncumbrance * Decimal(0.01 * (100 - bigPercent))
     elif magnitude <= -8:
         result = "Too weak to draw or load any bow or crossbow."
     elif magnitude <= -7:
-        result = "One-handed weapons must be used two-handed; two-handed weapons have a -1 penalty to attack and damage."
+        result = "One-handed melee weapons must be used two-handed (except daggers); two-handed melee weapons have a -1 penalty to attack and damage."
     elif magnitude <= -6:
         result = "Encumbrance limits reduced by " + str(smallPercent) + "%."
         player.maxEncumbrance = player.maxEncumbrance * Decimal(0.01 * (100 - smallPercent))
