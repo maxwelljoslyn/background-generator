@@ -735,3 +735,57 @@ def detailAgility(magnitude, player):
     else:
         result = "Character can climb poles and free-hanging ropes, and walk tightropes, as if climbing an ordinary wall."
     return result
+
+def birthday(age, currentYear = 1700):
+    birthYear = (currentYear - age) + 1
+    # the addition of 1 year here was supposed to correct so that even if the
+    # characters' birthday had already passed this yar, they would still be the right age
+    # but it's an off-by-one error making them too old if the birthday hasn't passed yet
+    # the opposite error (making them too young) happens if we subtract 1
+    # the solution, which I won't do yet, is to use not only the current day,
+    # but also the current year
+    leapYear = ((birthYear % 4) == 0)
+    if leapYear:
+        febLength = 29
+    else:
+        febLength = 28
+    endJanuary = 31
+    endFebruary = febLength + endJanuary
+    endMarch = 31 + endFebruary
+    endApril = 30 + endMarch
+    endMay = 31 + endApril
+    endJune = 30 + endMay
+    endJuly = 31 + endJune
+    endAugust = 31 + endJuly
+    endSeptember = 30 + endAugust
+    endOctober = 31 + endSeptember
+    endNovember = 30 + endOctober
+    endDecember = 31 + endNovember
+    monthEnds = [endJanuary, endFebruary, endMarch, endApril, endMay, endJune, endJuly,
+                 endAugust, endSeptember, endOctober, endNovember, endDecember]
+    monthNames = ["January","February","March","April","May","June","July",
+                  "August","September", "October","November","December"]
+    # initialize the two-way correspondence between final ordinal day of year,
+    # and name of the month whose last day is that day of the year
+    monthRelations = {}
+    for x in range(0,len(monthNames)):
+        n = monthNames[x]
+        end = monthEnds[x]
+        monthRelations[n] = end
+        monthRelations[end] = n
+
+    # endDecember is also the number of days in this year
+    dayOfTheYear = randint(1,endDecember)
+
+    birthdayMonthDay = ""
+    for end in monthEnds:
+        if dayOfTheYear <= end:
+            m = monthRelations[end]
+            d = end - dayOfTheYear + 1
+            # the extra 1 added to d is so that days are number 1 to end, instead of 0 to (end-1)
+            birthdayMonthDay = m + " " + str(d)
+            break
+        else:
+            pass
+
+    return birthdayMonthDay
