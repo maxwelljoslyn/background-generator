@@ -699,30 +699,32 @@ def detailAgility(magnitude, player):
     elif magnitude == 2:
         result = "Character requires no AP to draw a weapon weighing 3 lbs or less."
     elif magnitude == 3:
-        result = "Character enjoys a penalty of only -4 when shooting or throwing at long range."
+        result = "The character's penalty for shooting or throwing at long range is lessened by 1."
     elif magnitude == 4:
-        result = "Character automatically takes a defensive stance when surprised, improving " + poss + " AC by 1 in such situations."
-    elif magnitude <= 5:
-        result = "Character is quick to find an opening in enemy defenses. " + subj.capitalize() + " enjoys an extra +1 modifier to hit opponents from the flank or rear."
-    elif magnitude == 8:
+        result = "Character automatically takes a defensive stance when surprised, improving " + poss + " AC by 1 until no longer surprised."
+    elif magnitude <= 6:
+        result = "Character is quick to find an opening in enemy defenses. " + subj.capitalize() + " has an extra +1 modifier to hit opponents from the flank or rear."
+    elif magnitude == 7:
         result = "Friendly fire committed by this character is ignored if the affected ally is within 20 feet."
+    elif magnitude == 8:
+        result = "Character has a talent for cheating at cards; base 20% chance plus more favorable of: 2% per point of Dex OR (if a thief) 1/2 of pickpocketing success target."
     elif magnitude == 9:
-        result = "Character has a talent for cheating at cards; base 40% chance plus more favorable of: 2% per point of Dex OR (if a thief) 1/2 of pickpocketing success target."
+        result = "The character's penalty for shooting at both medium and long ranges is lessened by 1."
     elif magnitude == 10:
-        result = "Character can nimbly climb poles and ropes as if climbing an ordinary wall; when doing so, " + subj + " is treated as a thief of equal level."
+        result = "Character can climb poles and free-hanging ropes as if climbing an ordinary wall."
     elif magnitude == 11:
         if player.pClass == "Thief":
             result = "Character notices traps as if one level higher."
         else:
             result = "Character has a 15% chance to notice traps."
     elif magnitude == 12:
-        result = "Character can catch and handle ordinary snakes if a save vs. Poison is made with a +4 bonus."
+        result = "Character can catch and handle ordinary snakes if " + subj + " successfully saves vs. Poison (with a +4 bonus.)"
     elif magnitude == 13:
         num = randint(1,2)
         if num == 1:
             result = "Character gains " + obj + " a +1 bonus to hit with bolas, sling, and other weapons which are spun before throwing."
         else:
-            result = "Character is +1 to hit with any weapon which has a splash effect, including certain orb spells."
+            result = "Character is +1 to hit with any weapon or object which has a splash effect, including certain orb spells."
     elif magnitude == 14:
         result = "Character requires no AP to draw a weapon weighing 5 lbs or less."
     elif magnitude == 15:
