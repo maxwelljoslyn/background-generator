@@ -789,3 +789,7 @@ def birthday(age, currentYear = 1700):
             pass
 
     return birthdayMonthDay
+hairColors = ["black"] * 40 + ["brown"] * 30 + ["blonde"] * 20 + ["red"] * 10
+
+def getBaseHairColor():
+    return choice(hairColors)
