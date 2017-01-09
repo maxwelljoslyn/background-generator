@@ -551,7 +551,7 @@ def getHealthCondition(roll):
     elif roll <= 4:
         return "Flaring pain in joints: character finds outdoor travel difficult, and will suffer an extra point of damage each day when traveling."
     elif roll <= 6:
-        return "Low tolerance for alcohol: character takes 1d4 damage from consuming 8 ounces. This weakness also applies to potions."
+        return "Low tolerance for alcohol: character takes 1d3 damage for each 8 ounces consumed."
     elif roll <= 8:
         return "Dry and flaky skin: while armored, character will suffer 1 damage per two hours spent walking or riding."
     elif roll <= 10:
