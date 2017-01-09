@@ -1,5 +1,6 @@
 from random import *
 from decimal import *
+from collections import namedtuple
 
 getcontext().prec = 3
 
@@ -793,3 +794,94 @@ hairColors = ["black"] * 40 + ["brown"] * 30 + ["blonde"] * 20 + ["red"] * 10
 
 def getBaseHairColor():
     return choice(hairColors)
+
+def adjustHairColorForAging(baseHairColor, age, constitution):
+    aging = randint(1,100)
+    hair = namedtuple("hair", ["color","description"])
+    baseCase = hair(baseHairColor,"")
+    if age <= 20:
+        return baseCase
+    elif age <= 29:
+        if aging > 7 * constitution:
+            return hair(baseHairColor,"prematurely graying")
+        else:
+            return baseCase
+    elif age <= 39:
+        if aging > 6 * constitution:
+            return hair(baseHairColor,"graying")
+        else:
+            return baseCase
+    elif age <= 49:
+        if aging > 5 * constitution:
+            return hair("gray","was once " + baseHairColor)
+        else:
+            return baseCase
+    elif age <= 59:
+        if aging > 4 * constitution:
+            return hair("gray", "was once " + baseHairColor)
+        else:
+            return hair(baseHairColor,"graying")
+    else:
+        return hair("gray","was once " + baseHairColor)
+
+def hairStatusAfterAging(age, constitution, sex):
+    aging = randint(1,100)
+
+    if sex == "Male":
+        if age <= 20:
+            return ""
+        elif age <= 29:
+            if aging > 7 * constitution:
+                return "bald"
+            if aging > 6 * constitution:
+                return "thinning"
+            else:
+                return ""
+        elif age <= 39:
+            if aging > 6 * constitution:
+                return "bald"
+            elif aging > 5 * constitution:
+                return "thinning"
+            else:
+                return ""
+        elif age <= 49:
+            if aging > 5 * constitution:
+                return "bald"
+            elif aging > 4 * constitution:
+                return "thinning"
+            else:
+                return ""
+        elif age <= 59:
+            if aging > 3 * constitution:
+                return "bald"
+            elif aging > 2 * constitution:
+                return "thinning"
+            else:
+                return ""
+        else:
+            if aging > 2 * constitution:
+                return "bald"
+            elif aging > constitution:
+                return "thinning"
+            else:
+                return ""
+    else:
+        # sex is Female
+        hairIfMale = hairStatusAfterAging(age - 10, constitution, "Male")
+        if hairIfMale == "bald":
+            if aging > 10 * constitution:
+                return "bald"
+            else:
+                return "wispy"
+        else:
+            return hairIfMale
+
+
+def makeFinalHair(baseHair, age, con, sex):
+    hairData = namedtuple("hair",["haircolor","hairdesc","haircond"])
+    hairColorAdj = adjustHairColorForAging(baseHair, age, con)
+    hairLevelAdj = hairStatusAfterAging(age, con, sex)
+    if hairLevelAdj == "bald":
+        return hairData("bald", "was once " + baseHair,"")
+    else:
+        return hairData(hairColorAdj.color, hairColorAdj.description, hairLevelAdj)
