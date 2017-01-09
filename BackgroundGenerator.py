@@ -236,6 +236,8 @@ def main():
                 hair = hair + ", " + attribute
         f.write("Hair: " + hair)
         f.write("\n")
+        f.write("Eyes: " + c.eyeColor)
+        f.write("\n")
         baseMoney = Decimal(20) + Decimal(randint(2,6) * 10)
         actualMoney = baseMoney * c.moneyMult
         f.write("Starting money: " + str(actualMoney) + " gold pieces")
