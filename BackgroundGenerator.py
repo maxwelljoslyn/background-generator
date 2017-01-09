@@ -132,8 +132,9 @@ class PC():
         self.credit = 0
         # set this to false if getting the orphan result
         self.hasFamily = True
-        
-    
+        self.baseHair = getBaseHairColor()
+        self.eyeColor = getEyeColor(self.baseHair)
+
 def main():
     mySeed = randint(0,1000000000)
     seed(mySeed)
