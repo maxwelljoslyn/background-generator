@@ -227,6 +227,15 @@ def main():
         f.write("\n")
         f.write("Birthday: " + birthday(age))
         f.write("\n")
+        hairInfo = makeFinalHair(c.baseHair, age, c.Constitution, c.sex)
+        hair = hairInfo.haircolor
+        for attribute in [hairInfo.hairdesc, hairInfo.haircond]:
+            if attribute == "":
+                pass
+            else:
+                hair = hair + ", " + attribute
+        f.write("Hair: " + hair)
+        f.write("\n")
         baseMoney = Decimal(20) + Decimal(randint(2,6) * 10)
         actualMoney = baseMoney * c.moneyMult
         f.write("Starting money: " + str(actualMoney) + " gold pieces")
