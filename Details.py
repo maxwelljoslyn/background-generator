@@ -876,6 +876,42 @@ def hairStatusAfterAging(age, constitution, sex):
         else:
             return hairIfMale
 
+def getEyeColor(baseHairColor):
+    if baseHairColor not in hairColors:
+        raise ValueError("unrecognized hair color")
+    score = randint(1,100)
+    if baseHairColor == "black":
+        if score < 40:
+            return "brown"
+        elif score < 80:
+            return "black"
+        else:
+            return "green"
+
+    elif baseHairColor == "red":
+        if score < 50:
+            return "green"
+        else:
+            return "blue"
+
+    elif baseHairColor =="blonde":
+        if score < 50:
+            return "blue"
+        elif score < 75:
+            return "green"
+        else:
+            return "brown"
+
+    else:
+        # baseHair is brown
+        if score < 15:
+            return "blue"
+        elif score < 35:
+            return "green"
+        elif score < 60:
+            return "brown"
+        else:
+            return "black"
 
 def makeFinalHair(baseHair, age, con, sex):
     hairData = namedtuple("hair",["haircolor","hairdesc","haircond"])
