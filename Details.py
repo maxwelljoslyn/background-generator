@@ -392,7 +392,7 @@ def detailChoices(magnitude, player):
         else:
             result = "Character is pregnant and " + str(months) + " months along."
     elif magnitude == -6:
-        result = "Character has been swindled of all money and possessions, leaving " + obj + " with only a shirt, trousers, and underwear."
+        result = "Character has been swindled of all money and possessions, leaving " + obj + " with only shirt-underwear and breeches."
         player.moneyMult = Decimal(0)
     elif magnitude == -5:
         result = "Trust and generosity to family or others has left the character with little money."
