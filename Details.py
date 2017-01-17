@@ -64,7 +64,7 @@ def detailFeats(magnitude, player):
     elif magnitude <= 15:
         result = "Each day, the first time the character is stunned, after rejoining combat " + subj + " gains +2 to melee attack and damage for 10 rounds."
     else:
-        result = "Each day, the first time the character is stunned, after " + subj + " rejoins combat " + subj + " will gain hysterical strength for 10 rounds, increasing Strength by 2d4 points."
+        result = "Each day, the first time the character is stunned, after rejoining combat " + subj + " gains hysterical strength. Roll 1d3+1: for 10 rounds, character gains that amount as a bonus to melee attack and damage."
     return result
 
 # based on Wisdom
