@@ -41,7 +41,7 @@ def detailFeats(magnitude, player):
     elif magnitude <= -4:
         result = "Poor cardiovascular health. Character can only hold breath for 1/3 of the normal time."
     elif magnitude <= -2:
-        result = "Weak arms and legs. Treat character's Dexterity as half its actual value (round down) for the purpose of no-fault climbing. Danger climbing ability is reduced by " + str(choice([10,15])) + "%." 
+        result = "Weak arms and legs. Treat character's Dexterity as half its actual value (round down) for the purpose of no-fault climbing. Danger climbing ability is reduced by " + str(randint(10,15)) + "%." 
     elif magnitude <= -1:
         result = "Throwing weapons deal 1 less damage (minimum 0.)"
     elif magnitude <= 1:
