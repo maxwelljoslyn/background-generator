@@ -406,7 +406,7 @@ def detailChoices(magnitude, player):
         if isCig:
             result = "Character is addicted to " + str(numCigarettes) + " oz. of tobacco per day; " + consequence
         else:
-            result = "Character is addicted to " + str(ozLiquor) + " oz. of liquor per day (or " + str(ozBeer) + " oz. of beer); " + consequence
+            result = "Character is addicted to " + str(ozLiquor) + " fl oz. of liquor per day (or " + str(ozBeer) + " fl oz. of beer); " + consequence
     elif magnitude == -3:
         if player.sex == "Male":
             p = "fathered"
