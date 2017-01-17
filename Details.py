@@ -62,7 +62,7 @@ def detailFeats(magnitude, player):
     elif magnitude <= 13:
         result = "Powerful muscles add +3 on rolls made to escape manacles, ropes, or other constraints."
     elif magnitude <= 15:
-        result = "Each day, the first time the character is reduced to 1 or less HP, " + subj + " gains +3 to attack and damage for 10 rounds."
+        result = "Each day, the first time the character is stunned, after rejoining combat " + subj + " gains +2 to melee attack and damage for 10 rounds."
     else:
         result = "Each day, the first time the character is stunned, after " + subj + " rejoins combat " + subj + " will gain hysterical strength for 10 rounds, increasing Strength by 2d4 points."
     return result
