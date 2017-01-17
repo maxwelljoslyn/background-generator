@@ -190,7 +190,15 @@ def detailInterpersonal(magnitude, player):
         result = "Character has received the notice of the local government. The character may seek one favor."
     elif magnitude <= 14:
         num = randint(3,5)
-        result = "Character has made friends with " + str(num) + " men-at-arms, who have a morale of 10."
+        descriptions = []
+        for i in range(1,num+1):
+            enumerator = "the last, a" if i == num else "one "
+            sex = choice(["man","woman"])
+            desc = stringifyManAtArmsEquipment(manAtArmsEquipment()) + ": wages " + str(manAtArmsPay()) + " GP/mo"
+            descriptions.append(enumerator + " " + sex + " " + desc)
+        result = "Character has made friends with " + str(num) + " men-at-arms, who have a morale of 10. Can be hired now or later. They are as follows:"
+        for d in descriptions:
+            result = result + " " + d + "."
     elif magnitude <= 16:
         result = "Character has been made a member of the Illuminati."
     else:
