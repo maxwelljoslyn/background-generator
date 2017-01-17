@@ -398,13 +398,13 @@ def detailChoices(magnitude, player):
         result = "Trust and generosity to family or others has left the character with little money."
         player.moneyMult = player.moneyMult * Decimal(0.3)
     elif magnitude == -4:
-        numCigarettes = randint(1,4) + randint(1,4) + randint(1,4) + randint(1,4)
         ozLiquor = 4 + randint(1,6) + randint(1,6)
         ozBeer = ozLiquor * 2
+        ozTobacco = randint(1,3)
         isCig = choice([True,False])
         consequence = "until the addiction is fed each day, the character's Wisdom will be treated as 50% normal, and other stats will be treated as 90% normal."
         if isCig:
-            result = "Character is addicted to " + str(numCigarettes) + " cigarettes per day; " + consequence
+            result = "Character is addicted to " + str(numCigarettes) + " oz. of tobacco per day; " + consequence
         else:
             result = "Character is addicted to " + str(ozLiquor) + " oz. of liquor per day (or " + str(ozBeer) + " oz. of beer); " + consequence
     elif magnitude == -3:
