@@ -169,7 +169,7 @@ def detailInterpersonal(magnitude, player):
                 lover = "son"
             result = "The character is loved by the " + lover + " of an artisan."
     elif magnitude == 4:
-        result = "Character has made friends with two men-at-arms, who have a morale of 9."
+        result = "Character has made friends with two men-at-arms, who have a morale of 9. One, a " + choice(["man","woman"]) + ", " + stringifyManAtArmsEquipment(manAtArmsEquipment()) + "; the other, a " + choice(["man","woman"]) + ", " + stringifyManAtArmsEquipment(manAtArmsEquipment()) + ". Can be hired now or later; wages " + str(manAtArmsPay()) + " and " + str(manAtArmsPay()) + " GP/mo"
     elif magnitude == 5:
         result = "Character is well-known and liked around these parts. Can easily obtain as many hirelings as needed (normally each one requires a reaction roll.) Limits based on town size still apply."
     elif magnitude == 6:
