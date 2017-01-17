@@ -158,7 +158,8 @@ def detailInterpersonal(magnitude, player):
         else:
             result = "Hirelings are made uneasy by character's small-mindedness. Base morale will be 1 point below normal, even if they are gained through this generator."
     elif magnitude == 1:
-        result = "Character has made friends with a man-at-arms, who has a morale of 8."
+        sex = choice(["he","she"])
+        result = "Character has made friends with a man-at-arms, who has a morale of 8. " + sex.capitalize() + " " + stringifyManAtArmsEquipment(manAtArmsEquipment()) + ". " + sex.capitalize() + " may be hired now or later; cost is " + str(manAtArmsPay()) + " GP/month."
     elif magnitude <= 3:
         if player.hasFamily:
             result = "Family members treat the character and " + poss + " friends well, and look forward to news and visits. Brothers, sisters, and cousins will work as hirelings with a starting morale of 9."
