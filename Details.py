@@ -77,6 +77,9 @@ def manAtArmsEquipment():
     equipment = namedtuple("equipment",["weapons","armor"])
     return equipment(weapons,armor)
 
+def stringifyManAtArmsEquipment(equipment):
+    return "has " + equipment.armor + "; carries " + ", ".join(equipment.weapons)
+
 # based on Wisdom
 def detailInterpersonal(magnitude, player):
     subj, obj, poss = getGenderWords(player.sex)
