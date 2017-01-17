@@ -67,6 +67,9 @@ def detailFeats(magnitude, player):
         result = "Each day, the first time the character is stunned, after rejoining combat " + subj + " gains hysterical strength. Roll 1d3+1: for 10 rounds, character gains that amount as a bonus to melee attack and damage."
     return result
 
+manAtArmsWeapons = ["dagger","club","quarterstaff","sling"] * 3 + ["shortbow","shortsword","longsword","mace","bastard sword","greatsword"]
+manAtArmsArmor = ["no armor"] * 2 + ["gambeson"] * 4 + ["leather armor"] * 3 + ["studded leather"] * 2 + ["haubergeon"]
+
 # based on Wisdom
 def detailInterpersonal(magnitude, player):
     subj, obj, poss = getGenderWords(player.sex)
