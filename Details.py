@@ -80,6 +80,9 @@ def manAtArmsEquipment():
 def stringifyManAtArmsEquipment(equipment):
     return "has " + equipment.armor + "; carries " + ", ".join(equipment.weapons)
 
+def manAtArmsPay():
+    return 4 + randint(1,4) + randint(2,5) + randint(2,5) + randint(2,5)
+
 # based on Wisdom
 def detailInterpersonal(magnitude, player):
     subj, obj, poss = getGenderWords(player.sex)
