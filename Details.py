@@ -70,6 +70,13 @@ def detailFeats(magnitude, player):
 manAtArmsWeapons = ["dagger","club","quarterstaff","sling"] * 3 + ["shortbow","shortsword","longsword","mace","bastard sword","greatsword"]
 manAtArmsArmor = ["no armor"] * 2 + ["gambeson"] * 4 + ["leather armor"] * 3 + ["studded leather"] * 2 + ["haubergeon"]
 
+def manAtArmsEquipment():
+    numWeapons = 1 if randint(1,10) < 7 else 2
+    weapons = sample(manAtArmsWeapons, numWeapons)
+    armor = choice(manAtArmsArmor)
+    equipment = namedtuple("equipment",["weapons","armor"])
+    return equipment(weapons,armor)
+
 # based on Wisdom
 def detailInterpersonal(magnitude, player):
     subj, obj, poss = getGenderWords(player.sex)
