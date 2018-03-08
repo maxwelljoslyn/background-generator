@@ -621,7 +621,7 @@ def getHealthCondition(roll):
 
 
 def detailHealth(magnitude, player):
-    subj, obj, poss = getGenderWords(player)
+    subj, obj, poss = getGenderWords(player.sex)
     # get 4 health conditions, each with different possibilities of being mild or severe
     condition4 = getHealthCondition(randint(24,30))
     condition3 = getHealthCondition(randint(16,24))
@@ -675,7 +675,7 @@ def detailHealth(magnitude, player):
 
 # governed by Dex
 def detailAgility(magnitude, player):
-    subj, obj, poss = getGenderWords(player)
+    subj, obj, poss = getGenderWords(player.sex)
     whichSide = choice(["right","left"])
     result = ""
     if magnitude == -17:
