@@ -33,12 +33,14 @@ def validateScore(score):
     else:
         return score
 
+possibleClassNames = ["fighter","paladin","ranger","cleric","druid","mage","illusionist","thief","assassin","monk"]
+
+
 def validateClass(pClass):
-    if pClass.lower() in ["fighter","paladin","ranger","cleric","druid","mage","illusionist",
-                  "thief","assassin","monk"]:
+    if pClass.lower() in possibleClassNames:
         return pClass.capitalize()
     else:
-        raise ValueError(pclass + " is not a character class.")
+        raise ValueError(pClass + " is not a character class.")
 
 baseStartingAge = {"Fighter":15,"Paladin":19,"Ranger":17,"Cleric":20,"Druid":20,"Mage":22,
                "Illusionist":24,"Thief":17,"Assassin":19,"Monk":22}
