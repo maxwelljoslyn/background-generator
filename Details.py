@@ -28,14 +28,14 @@ def detailFeats(magnitude, player):
         result = "One-handed melee weapons must be used two-handed (even daggers); two-handed melee weapons suffer the non-proficiency penalty (if already nonproficient with a given weapon, increase its penalty by 50%, round down.)"
     elif magnitude <= -9:
         result = "Encumbrance limits reduced by " + str(bigPercent) + "%."
-        player.maxEncumbrance = player.maxEncumbrance * Decimal(0.01 * (100 - bigPercent))
+        player.encMult = player.encMult - Decimal(0.01 * bigPercent)
     elif magnitude <= -8:
         result = "Too weak to draw or load any bow or crossbow."
     elif magnitude <= -7:
         result = "One-handed melee weapons must be used two-handed (except daggers); two-handed melee weapons have a -1 penalty to attack and damage."
     elif magnitude <= -6:
         result = "Encumbrance limits reduced by " + str(smallPercent) + "%."
-        player.maxEncumbrance = player.maxEncumbrance * Decimal(0.01 * (100 - smallPercent))
+        player.encMult = player.encMult - Decimal(0.01 * smallPercent)
     elif magnitude <= -5:
         result = "Too weak to draw a longbow or load a heavy crossbow."
     elif magnitude <= -4:
@@ -54,7 +54,7 @@ def detailFeats(magnitude, player):
         result = "Character is capable of swimming."
     elif magnitude <= 8:
         result = "Encumbrance limits increased by " + str(smallPercent) + "%."
-        player.maxEncumbrance = player.maxEncumbrance * Decimal(0.01 * (100 + smallPercent))
+        player.encMult = player.encMult + Decimal(0.01 * smallPercent)
     elif magnitude <= 9:
         result = "Strong upper body. For slings, bows (not crossbows), and all thrown weapons, increase close range by 1 hex, medium range by 10%, and long range by 20%."
     elif magnitude <= 11:

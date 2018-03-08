@@ -92,8 +92,9 @@ def calcMaxEncumbrance(player):
     else:
         proportion = player.weight / baseFemaleWeight
     idealMaxEncumbrance = idealEncumbranceTable[player.Strength]
-    actualMaxEncumbrance = proportion * idealMaxEncumbrance
-    return actualMaxEncumbrance
+    unmodifiedMaxEncumbrance = proportion * idealMaxEncumbrance
+    actualMax = unmodifiedMaxEncumbrance * player.maxEncumbrance
+    return actualMax
 
 def encumbrancePenaltyCutoffs(maxEnc):
     """Calculate the encumbrance levels at which character suffers reduced Action Points."""
@@ -122,6 +123,9 @@ class PC():
         self.weight = 0 # pounds
         self.height = 0 # inches
         self.sex = ""
+        # multiply this by final calculated "ideal" max enc. to determine final max enc
+        self.encMult = Decimal(1.0)
+        # this will be set later, don't change it
         self.maxEncumbrance = Decimal(0)
         # mult this value times default starting money to determine actual starting money
         self.moneyMult = Decimal(1)
