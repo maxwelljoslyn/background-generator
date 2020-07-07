@@ -357,12 +357,7 @@ def detailFamily(magnitude,c):
         grands = getGrandparents(randint(1,4))
         numsibs = randint(1,2) + randint(0,2)
         sibs = getSiblings(numsibs)
-        result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
-    elif magnitude <= 10:
-        grands = getGrandparents(randint(2,4))
-        numsibs = randint(1,2) + randint(0,3)
-        sibs = getSiblings(numsibs)
-        result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
+        result = "Character raised by mother and father. Has " + grands + "; "
     elif magnitude <= 12:
         grands = getGrandparents(randint(2,4))
         numsibs = randint(1,2) + randint(0,3)
@@ -370,12 +365,12 @@ def detailFamily(magnitude,c):
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 14:
         grands = getGrandparents(randint(2,4))
-        numsibs = randint(1,) + randint(0,3)
+        numsibs = randint(1,3) + randint(0,3)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     else:
         grands = getGrandparents(randint(2,4))
-        numsibs = randint(1,3) + randint(0,3)
+        numsibs = randint(1,3) + randint(1,3)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     return result

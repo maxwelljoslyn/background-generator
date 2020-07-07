@@ -10,7 +10,9 @@ getcontext().prec = 3
 def advantageMagnitude(abiScore):
     """Subtract a d20 roll from the score.
     This results in a value from -17 (worst) to +17 (best),
-    which determines the nature of background characteristic granted by this ability score."""
+    which determines the nature of background characteristic granted by this ability score.
+
+todo fixme: the range is assumed to be -17 to 17, but if racial (or other) ability score adjustments are used, they apply to the 3-18 range, making the final score 2-19 or even 1-20 depending on the adjustments used. it is probably hardcoded in many other places that -17/+17 are the edges."""
     roll = randint(1,20)
     result = abiScore - roll
     return result
@@ -64,16 +66,14 @@ baseFemaleHeight = Decimal(66)
 
 def calcHeightWeight(player):
     source = randint(1,6) + randint(1,6) + randint(1,6) + randint(1,6)
-    # bell curve for this 4d6 roll has peak at value 14
-    avg = 14 # ((6 * 4) + (1 * 4)) / 2 = 14
-    difference = abs(avg - source)
-    # use this to determine modifiers to base height and weight
-    # first, the case where source > avg
+    # bell curve for this 4d6 roll has peak at value 14:  ((6 * 4) + (1 * 4)) / 2 = 14
+    avg = 14
+    difference = source - avg
+    # low source, e.g. 4, means 4 - 14 = -10
+    # high source, e.g. 18, means 18 - 14 = 4
     heightMod = 1 + (difference * 0.01)
     weightMod = 1 + (difference * 0.025)
-    if source < avg:
-        heightMod = 1 - (difference * 0.01)
-        weightMod = 1 - (difference * 0.025)
+    
     if player.sex == "Male":
         height = Decimal(baseMaleHeight) * Decimal(heightMod)
         weight = Decimal(baseMaleWeight) * Decimal(weightMod)
@@ -83,9 +83,12 @@ def calcHeightWeight(player):
     height = round(height)
     weight = round(weight)
     return (height, weight)
-    
+
+
+# area where 18 is hardcoded as max ability score
+idealEncumbranceTable = {strength:(65 + 5 * strength) for strength in range(3,19)}
+
 def calcMaxEncumbrance(player):
-    idealEncumbranceTable = {x:(65 + 5 * x) for x in range(3,19)}
     proportion = 0
     if player.sex == "Male":
         proportion = player.weight / baseMaleWeight
@@ -100,11 +103,11 @@ def encumbrancePenaltyCutoffs(maxEnc):
     """Calculate the encumbrance levels at which character suffers reduced Action Points."""
     maxEnc = Decimal(maxEnc)
     nopenalty =   Decimal(0.4) * maxEnc
-    min1penalty = Decimal(0.55) * maxEnc
-    min2penalty = Decimal(0.7) * maxEnc
-    min3penalty = Decimal(0.85) * maxEnc
+    minus1penalty = Decimal(0.55) * maxEnc
+    minus2penalty = Decimal(0.7) * maxEnc
+    minus3penalty = Decimal(0.85) * maxEnc
     # between the -3 penalty cutoff and maxEnc, the penalty is -4
-    return nopenalty, min1penalty, min2penalty, min3penalty
+    return nopenalty, minus1penalty, minus2penalty, minus3penalty
 
 def inchesToFeetInches(arg):
    feet = floor(arg/12)
@@ -192,7 +195,7 @@ def writeline(f,text):
 def main():
     c = PC()
     seed(c.seed)
-    testing = True
+    testing = False
     if testing:
         c.pClass = "Mage"
         c.Strength, c.Dexterity, c.Wisdom, c.Constitution, c.Intelligence, c.Charisma = 12,12,12,12,12,12
