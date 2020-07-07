@@ -17,15 +17,15 @@ def detailFeats(magnitude, player):
     result = ""
     subj, obj, poss = getGenderWords(player.sex)
     if magnitude == -17:
-        result = "Cannot move faster than normal speed."
+        result = "Weak lungs make it impossible to run."
     elif magnitude <= -14:
-        result = "When stunned, must make save against Paralyzation to end the stun and rejoin combat."
+        result = "When stunned, must make save against paralysis to end the stun and rejoin combat."
     elif magnitude <= -12:
         result = "Character is forever incapable of swimming, regardless of character class or skills."
     elif magnitude <= -11:
         result = "Poor endurance. Character cannot run for more than 1 round at a time, no matter " + poss + " Constitution score."
     elif magnitude <= -10:
-        result = "One-handed melee weapons must be used two-handed (even daggers); two-handed melee weapons suffer the non-proficiency penalty (if already nonproficient with a given weapon, increase its penalty by 50%, round down.)"
+        result = "One-handed melee weapons must be used two-handed (even daggers); two-handed melee weapons suffer the non-proficiency penalty (if already non-proficient with a given weapon,  add an additional -1 penalty.)"
     elif magnitude <= -9:
         result = "Encumbrance limits reduced by " + str(bigPercent) + "%."
         player.encMult = player.encMult - Decimal(0.01 * bigPercent)
@@ -39,7 +39,7 @@ def detailFeats(magnitude, player):
     elif magnitude <= -5:
         result = "Too weak to draw a longbow or load a heavy crossbow."
     elif magnitude <= -4:
-        result = "Poor cardiovascular health. Character can only hold breath for 1/3 of the normal time."
+        result = "Poor cardiovascular health. Character can only hold breath for 1 round (normal: 3)."
     elif magnitude <= -2:
         result = "Weak arms and legs. Treat character's Dexterity as half its actual value (round down) for the purpose of no-fault climbing. Danger climbing ability is reduced by " + str(randint(10,15)) + "%." 
     elif magnitude <= -1:
@@ -56,9 +56,9 @@ def detailFeats(magnitude, player):
         result = "Encumbrance limits increased by " + str(smallPercent) + "%."
         player.encMult = player.encMult + Decimal(0.01 * smallPercent)
     elif magnitude <= 9:
-        result = "Strong upper body. For slings, bows (not crossbows), and all thrown weapons, increase close range by 1 hex, medium range by 10%, and long range by 20%."
+        result = "Strong upper body. For slings, bows (not crossbows), and all thrown weapons, increase short range by 1 hex, and medium and long ranges by 2 hexes."
     elif magnitude <= 11:
-        result = "Can hold breath for three times the normal duration."
+        result = "Can hold breath for three times the normal duration (9 rounds instead of 3.)"
     elif magnitude <= 13:
         result = "Powerful muscles add +3 on rolls made to escape manacles, ropes, or other constraints."
     elif magnitude <= 15:
@@ -89,7 +89,7 @@ def detailInterpersonal(magnitude, player):
     townDir = choice(["north","south","east","west"])
     result = ""
     if magnitude == -17:
-       result = "The character inadverdently revealed information to the enemy of the land where they are from, enabling that enemy to invade and seize wealth and property. A death sentence has been laid upon the character."
+       result = "The character inadvertently revealed information to the enemy of the land where they are from, enabling that enemy to invade and seize wealth and property. A death sentence has been laid upon the character."
     elif magnitude == -16:
         result = "Ill-considered opinions and bad intentions caused the character to be excommunicated from " + poss + " original religion. " + subj.capitalize() + " is marked as an apostate and all sites of organized worship will shun " + obj + "."
     elif magnitude <= -14:
@@ -184,8 +184,8 @@ def detailInterpersonal(magnitude, player):
     elif magnitude == 9:
         result = "Character is so popular here that " + subj + " can count on free lodging indefinitely no matter how long the stay. This also applies to any area in which " + subj + " lives for at least 6 straight months."
     elif magnitude <= 11:
-        guild = choice(["alchemist","stonemason","merchant","blacksmith"])
-        result = "Character has made influential contacts in the local " + guild + " guild, and can count on a favor related to that industry."
+        guild = choice(["alchemist","brewer", "blacksmith", "cooper", "carpenter", "carver", "shipwright", "chandler", "mason","merchant","weaver"])
+        result = "Character has made influential contacts in the local " + guild + " guild, and can count on a favor from them."
     elif magnitude == 12:
         result = "Character has received the notice of the local government. The character may seek one favor."
     elif magnitude <= 14:
@@ -216,7 +216,7 @@ def detailTendency(magnitude, player):
         num = randint(3,5) * -1
         result = "Character is foolish, ignorant, and superstitious. Saves against fear and mind-affecting spells suffer a " + str(num) + " penalty."
     elif magnitude <= -14:
-        result = "Character is cowardly and lacks confidence. If stunned, a save must be made vs. Paralyzation, or else the character will avoid all combat, including spellcasting, for 1d4 rounds."
+        result = "Character is cowardly and lacks confidence. If stunned, a save must be made vs. paralysis, or else the character will avoid all combat, including spellcasting, for 1d4 rounds."
     elif magnitude == -13:
         result = "Character has an awful temper. If character's weapon breaks or if he or she is hit by friendly fire, a save vs. Magic must be made; otherwise, for 1d4+1 rounds, the character will be -3 to hit, +1 to damage, and unaffected by fear, morale, or attempts to communicate."
     elif magnitude <= -11:
@@ -252,10 +252,9 @@ def detailTendency(magnitude, player):
     elif magnitude <= 9:
         result = "Character can detect secret and concealed doors. Merely passing within 10 feet gives a 1/6 chance to notice it; actively searching an area gives a 2/6 chance."
     elif magnitude == 10:
-        secret = choice(["the location of buried or hidden treasure",
-                         "a secret shrine to a demon or obscure god",
-                         "the location of an area which is haunted",
-                         "the location of a magic portal"])
+        secret = choice(["the location of hidden treasure",
+                         "the location of a shrine to a demon or obscure god",
+                         "the location of an area which is naturally magic"])
         result = "Character possesses secret knowledge: " + secret + "."
     elif magnitude <= 12:
         result = "One time per week, if the character failed to purchase some item at the last-visited marketplace which would be useful now, the character is considered to have done so."
@@ -337,7 +336,7 @@ def detailFamily(magnitude,c):
         result = "Character raised by " + parent + ". Has " + grandparent + "; " + sib + "."
     elif magnitude == 2:
         parents = choice(["mother and father","mother and father","mother","father"])
-        grands = getGrandparents(randint(0,2))
+        grands = getGrandparents(randint(0,1))
         hasSib = choice([True,False])
         if hasSib:
             sib = makeSibling()
@@ -351,32 +350,32 @@ def detailFamily(magnitude,c):
        result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 6:
         grands = getGrandparents(randint(0,4))
-        numsibs = randint(0,3) + randint(0,3)
+        numsibs = randint(1,2) + randint(0,2)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 8:
         grands = getGrandparents(randint(1,4))
-        numsibs = randint(0,4) + randint(0,4)
+        numsibs = randint(1,2) + randint(0,2)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 10:
         grands = getGrandparents(randint(2,4))
-        numsibs = randint(0,5) + randint(0,5)
+        numsibs = randint(1,2) + randint(0,3)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 12:
         grands = getGrandparents(randint(2,4))
-        numsibs = randint(0,6) + randint(0,6)
+        numsibs = randint(1,2) + randint(0,3)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 14:
         grands = getGrandparents(randint(2,4))
-        numsibs = randint(0,7) + randint(0,7)
+        numsibs = randint(1,) + randint(0,3)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     else:
         grands = getGrandparents(randint(2,4))
-        numsibs = randint(1,7) + randint(1,7)
+        numsibs = randint(1,3) + randint(0,3)
         sibs = getSiblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     return result
@@ -389,9 +388,9 @@ def detailChoices(magnitude, player):
     if magnitude <= -16:
         result = "Character is missing lower half of " + whichHalf + " leg, and has a peg leg. One less AP than normal."
     elif magnitude <= -14:
-        result = "Character is missing left hand. Cannot use two-handed weapons. Can choose hook-hand as a weapon proficency, but does not start with one to use."
+        result = "Character is missing left hand. Cannot use two-handed weapons. Can choose hook-hand as a weapon proficiency, but does not start with one to use."
     elif magnitude == -13:
-        result = "Character is missing " + whichHalf + " eye. Ranged weapons have attack penalty: -1 at close range, -4 at medium, -10 at long."
+        result = "Character is missing " + whichHalf + " eye. Ranged weapons have additional attack penalty: -1 at close range, -3 at medium, -5 at long (total: -1/-5/-10)"
     elif magnitude == -12:
         m = randint(1,8) + randint(1,8) + randint(1,8) + randint(1,8)
         result = "Character has spent " + str(m) + " miserable years in prison."
@@ -417,21 +416,23 @@ def detailChoices(magnitude, player):
         else:
             result = "Character is pregnant and " + str(months) + " months along."
     elif magnitude == -6:
-        result = "Character has been swindled of all money and possessions, leaving " + obj + " with only shirt-underwear and breeches."
+        result = "Character has been swindled of all money and possessions, leaving " + obj + " with only a shirt."
         player.moneyMult = Decimal(0)
     elif magnitude == -5:
         result = "Trust and generosity to family or others has left the character with little money."
         player.moneyMult = player.moneyMult * Decimal(0.3)
     elif magnitude == -4:
-        ozTobacco = randint(1,3)
-        ozLiquor = randint(2,4) + randint(1,6) + randint(1,6)
-        ozBeer = ozLiquor * randint(3,4)
+        numCigs = randint(1,4)
+        gramsPerOz = Decimal(28.3495)
+        # grams per cigar, converted to oz to measure pipe tobacco
+        tobacco = numCigs * Decimal(2.5) / gramsPerOz
+        numBeers = randint(1,4)
         isCig = choice([True,False])
-        consequence = "until the addiction is fed each day, the character's Wisdom will be treated as 50% normal, and other stats will be treated as 90% normal."
+        consequence = "until the addiction is fed each day, the character's Wisdom will be treated as 50% normal, and other ability scores will be treated as 90% normal."
         if isCig:
-            result = "Character is addicted to " + str(numCigarettes) + " oz. of tobacco per day; " + consequence
+            result = "Character is addicted to " + str(round(numCigs)) + " cigar(s) per day (or " + str(round(tobacco,2)) + " oz pipe tobacco); " + consequence
         else:
-            result = "Character is addicted to " + str(ozLiquor) + " fl oz. of liquor per day (or " + str(ozBeer) + " fl oz. of beer); " + consequence
+            result = "Character is addicted to " + str(numBeers) + " beer(s) per day; " + consequence
     elif magnitude == -3:
         if player.sex == "Male":
             p = "fathered"
@@ -462,9 +463,8 @@ def detailChoices(magnitude, player):
         player.moneyMult *= Decimal(3)
     elif magnitude <= 9:
         credit = (randint(1,6) + randint(1,6) + randint(1,6)) * 50
-        interestAmount = randint(6,8)
-        result = "Character possesses credit with the local merchant guild, borrowable at " + str(interestAmount) + "% monthly interest."
-        player.credit = credit
+        player.credit += credit
+        result = "Character possesses credit with the local merchant guild."
     elif magnitude <= 11:
         num = randint(4,6)
         result = "Prudence and savings have greatly increased the character's money."
@@ -615,7 +615,7 @@ def getHealthCondition(roll):
     elif roll == 28:
         return "Severe hemorrhaging: if wounded, the character will bleed 3 extra HP per round. If bandages are used, character's wounds must be bound four times in order to stop the bleeding."
     elif roll == 29:
-        return "Blindness: character cannot see at all, and is altogether unable to sense light. Chief among the consequences is that all attacks are treated as if attacking invisible creatures (-8 normally, -4 if someone spends their turn helping to direct your strikes) and that all missile/thrown attacks which miss can cause friendly fire, in any direction."
+        return "Blindness: character cannot see at all, and is altogether unable to sense light. Chief among the consequences is that all attacks are treated as if attacking invisible creatures (-8 normally, -4 if someone spends time helping to direct your strikes) and that all missile/thrown attacks which miss can cause friendly fire, in any direction."
     else:
         return "Crippled legs: while the character's legs appear whole and undamaged, they are in fact entirely without feeling or strength. The character cannot walk under their own power."
 
@@ -638,15 +638,15 @@ def detailHealth(magnitude, player):
         result = condition1
     elif magnitude == 0:
         numDays = randint(7,14)
-        result = "Character is suffering from a head cold at the start of the campaign. For the next " + str(numDays) + " days, character will be -2 to attack and damage."
+        result = "Character is suffering from a severe cold at the start of the campaign. For the next " + str(numDays) + " days, character will be -1 to attack and damage."
     elif magnitude == 1:
-        result = "Character saves vs. poison as if one level higher."
+        result = "+1 save vs poison."
     elif magnitude == 2:
-        result = "Character saves vs. paralysis and petrification as if one level higher."
+        result = "+1 save vs paralysis."
     elif magnitude == 3:
-        result = "Character saves vs. death as if one level higher."
+        result = "+1 save vs death."
     elif magnitude == 4:
-        result = "Character saves vs. magic as if one level higher."
+        result = "+1 save vs magic."
     elif magnitude == 5:
         source = choice(["snake or reptile","insect"])
         result = "Character is resistant against " + source + " poison/venom. Damage is reduced by 50%."
@@ -654,23 +654,21 @@ def detailHealth(magnitude, player):
         source = choice(["marine creature","spider"])
         result = "Character is resistant against " + source + " poison/venom. Damage is reduced by 50%."
     elif magnitude <= 8:
-        result = "Character heals an extra HP from a day's rest."
+        result = "Character heals 1 extra HP from a day's rest."
     elif magnitude == 9:
-        result = "Character saves vs. poison as if two levels higher."
+        result = "+2 save vs poison."
     elif magnitude == 10:
-        result = "Character saves vs. paralysis and petrification as if two levels higher."
+        result = "+2 save vs paralysis."
     elif magnitude == 11:
-        result = "Character saves vs. death as if two levels higher."
+        result = "+2 save vs death."
     elif magnitude == 12:
-        result = "Character saves vs. magic as if two levels higher."
+        result = "+2 save vs magic."
     elif magnitude <= 14:
         result = "Character heals 2 extra HP from a day's rest."
-    elif magnitude == 15:
-        result = "Character saves against everything as if one level higher."
-    elif magnitude == 16:
-        result = "Character saves against everything as if two levels higher."
+    elif magnitude <= 16:
+        result = "+1 to all saves."
     elif magnitude == 17:
-        result = "Character saves against everything as if three levels higher."
+        result = "+2 to all saves."
     return result
 
 # governed by Dex
@@ -681,7 +679,7 @@ def detailAgility(magnitude, player):
     if magnitude == -17:
         result = "Fused bones in the character's " + whichSide + " leg causes a severe, dragging limp. Normal movement is reduced by 2."
     elif magnitude == -16:
-        result = "Character must save vs. Paralyzation before drawing a weapon; failure indicates " + subj + " cannot do it this round. No save is needed for subsequent attempts for the same weapon in the same combat." 
+        result = "Character must save vs paralysis before drawing a weapon; failure indicates " + subj + " cannot do it this round. No save is needed for subsequent attempts for the same weapon in the same combat." 
     elif magnitude == -15:
         result = "Character's " + whichSide + " hand is deformed and useless. Opposite hand is dominant."
     elif magnitude == -14:
@@ -725,7 +723,7 @@ def detailAgility(magnitude, player):
     elif magnitude == 2:
         result = "Character requires no AP to draw a weapon weighing 3 lbs or less."
     elif magnitude == 3:
-        result = "The character's penalty for shooting or throwing at long range is lessened by 1."
+        result = "The character's penalty for attacks at long range is lessened by 1."
     elif magnitude == 4:
         result = "Character automatically takes a defensive stance when surprised, improving " + poss + " AC by 1 until no longer surprised."
     elif magnitude <= 6:
@@ -735,7 +733,7 @@ def detailAgility(magnitude, player):
     elif magnitude == 8:
         result = "Character has a talent for cheating at cards; base 20% chance plus more favorable of: 2% per point of Dex OR (if a thief) 1/2 of pickpocketing success target."
     elif magnitude == 9:
-        result = "The character's penalty for shooting at both medium and long ranges is lessened by 1."
+        result = "The character's penalty for attacks at both medium and long ranges is lessened by 1."
     elif magnitude == 10:
         result = "Character can climb poles and free-hanging ropes as if climbing an ordinary wall."
     elif magnitude == 11:
@@ -762,7 +760,7 @@ def detailAgility(magnitude, player):
         result = "Character can climb poles and free-hanging ropes, and walk tightropes, as if climbing an ordinary wall."
     return result
 
-def birthday(age, currentYear = 1700):
+def birthday(age, currentYear = 1650):
     birthYear = (currentYear - age) + 1
     # the addition of 1 year here was supposed to correct so that even if the
     # characters' birthday had already passed this yar, they would still be the right age
@@ -946,3 +944,412 @@ def makeFinalHair(baseHair, age, con, sex):
         return hairData("bald", "was once " + baseHair,"")
     else:
         return hairData(hairColorAdj.color, hairColorAdj.description, hairLevelAdj)
+
+def professionStrength():
+    """Return a Strength-based profession."""
+    # roll = min(highest, randint(1,highest) + (2 * delta_10))
+    roll = randint(1,100)
+    if roll <= 20:
+        return "farmer"
+    elif roll <= 40:
+        return "fisherman"
+    elif roll <= 55:
+        return "sailor"
+    elif roll <= 70:
+        return "teamster"
+    elif roll <= 75:
+        return "guardsman"
+    elif roll <= 80:
+        return "mercenary"
+    elif roll <= 85:
+        return "outrider"
+    elif roll <= 90:
+        return "bounty hunter"
+    elif roll <= 95:
+        return "gladiator"
+    else:
+        return "weapon master"
+
+artisans_food = ["brewer", "vintner", "baker", "chandler", "confectioner", "butcher", "tobacconist"]
+
+artisans_textiles = ["tailor", "draper", "fuller", "weaver", "furrier", "tanner", "leatherworker", "cobbler"]
+
+artisans_wood = ["cooper", "wainwright", "shipwright", "furniture maker", "instrument maker", "papermaker", "bookbinder"]
+
+artisans_minerals = ["potter", "glassmaker", "glazier", "sculptor"]
+
+artisans_metals = ["smelter", "jeweller", "lapidary", "toolmaker", "diemaker", "engraver"]
+
+all_artisans = artisans_food
+all_artisans.extend(artisans_textiles)
+all_artisans.extend(artisans_wood)
+all_artisans.extend(artisans_minerals)
+all_artisans.extend(artisans_metals)
+    
+def professionDexterity():
+    """Return a Dexterity-based profession."""
+    roll = randint(1,100)
+    if roll <= 90:
+        group = choice(all_artisans)
+        return choice(group)
+    elif roll <= 94:
+        return "juggler"
+    elif roll <= 98:
+        return "gambler"
+    else:
+        return "monk"
+
+def professionConstitution():
+    """Return a Constitution-based profession."""
+    roll = randint(1,100)
+    if roll <= 5:
+        return "laborer"
+    if roll <= 10:
+        return "rat catcher"
+    elif roll <= 15:
+        return "grave robber"
+    elif roll <= 25:
+        return "porter"
+    elif roll <= 35:
+        return "bricklayer"
+    elif roll <= 45:
+        return "drover"
+    elif roll <= 55:
+        return "miner"
+    elif roll <= 60:
+        return "hermit"
+    elif roll <= 68:
+        return "blacksmith"
+    elif roll <= 76:
+        return "armorer"
+    elif roll <= 84:
+        return "weaponsmith"
+    elif roll <= 92:
+        return "mine foreman"
+    else:
+        return "explorer"
+
+def professionIntelligence():
+    roll = randint(1,100)
+    if roll <= 10:
+        return "trapper"
+    elif roll <= 15:
+        return "scribe"
+    elif roll <= 20:
+        return "alchemist's assistant"
+    elif roll <= 25:
+        return "boatman"
+    elif roll <= 30:
+        return "gamekeeper"
+    elif roll <= 35:
+        return "carpenter"
+    elif roll <= 40:
+        return "stonemason"
+    elif roll <= 45:
+        return "tinker"
+    elif roll <= 49:
+        return "bookkeeper"
+    elif roll <= 51:
+        return "tomb robber"
+    elif roll <= 55:
+        return "artillerist"
+    elif roll <= 59:
+        return "cartographer"
+    elif roll <= 63:
+        return "veterinarian"
+    elif roll <= 67:
+        return "hospitaler"
+    elif roll <= 71:
+        return "architect"
+    elif roll <= 75:
+        return "spy"
+    elif roll <= 80:
+        return "mage's apprentice"
+    elif roll <= 85:
+        return "lawyer"
+    elif roll <= 90:
+        return "alchemist"
+    elif roll <= 97:
+        return "spymaster"
+    else:
+        return "political advisor"
+
+def professionWisdom():
+    roll = randint(1,100)
+    if roll <= 15:
+        return "husbandman"
+    elif roll <= 25:
+        return "prospector"
+    elif roll <= 30:
+        return "herbalist"
+    elif roll <= 39:
+        return "tutor"
+    elif roll <= 48:
+        return "surgeon's apprentice"        
+    elif roll <= 57:
+        return "librarian"
+    elif roll <= 66:
+        return "priest"        
+    elif roll <= 75:
+        return "steward"    
+    elif roll <= 84:
+        return "village healer"
+    elif roll <= 88:
+        return "priest"                
+    elif roll <= 92:
+        return "mortician"
+    elif roll <= 87:
+        return "witch hunter"
+    elif roll <= 91:
+        return "professor"
+    elif roll <= 96:
+        return "ecclesiastical vicar"
+    else:
+        return "ecclesiastial rector"
+
+# creative_artists = ["painter", "illustrator", "engraver", "sculptor"]
+# performance_artists = ["mime", "jester", "clown", "monologist"]
+# literary_artists = ["poet", "author"]
+    
+def professionCharisma():
+    roll = randint(1,1000)
+    if roll <= 450:
+        return choice(["dancer","singer"])
+    elif roll <= 550:
+        return "landlord"
+    elif roll <= 625:
+        return "buccaneer"
+    elif roll <= 700:
+        return "innkeeper"
+    elif roll <= 775:
+        return "usurer"
+    elif roll <= 800:
+        return "fence"
+    elif roll <= 875:
+        return "hitman"
+    elif roll <= 950:
+        return "banker"
+    elif roll <= 960:
+        return "squire"
+    elif roll <= 965:
+        return "knight"
+    elif roll <= 970:
+        return "guildmaster " + choice(choice(all_artisans))
+    elif roll <= 975:
+        return "landless noble"
+    elif roll <= 980:
+        return "crusader"
+    elif roll <= 985:
+        return "marshal"
+    elif roll <= 990:
+        return "lesser noble"
+    elif roll <= 994:
+        return "middle noble"
+    elif roll <= 998:
+        return "greater noble"
+    else:
+        return "royalty"
+
+fixed_results = {
+    "farmer" : "can raise crops; DR 1 vs ice/cold",
+    "fisherman" : "have Fishing skill",
+    # fisherman and other "have X skill" results may also need to include "(amateur)"
+    "sailor" : "can handle rowboats and crew ships; +1 on checks/saves to keep balance",
+    "teamster" : "have Teamstering skill; party's pack animals have +1 morale",
+    "guard" : "only need 6 hrs of sleep per night; +1 awareness radius",
+    "mercenary" : "gain bonus weapon proficiency",
+    "cavalier" : "can ride a warhorse",
+    "bounty hunter" : "have Tracking skill (from Scouting study)",
+    "gladiator" : "+1 damage against all humanoids",
+    "weapon master" : "bonus weapon proficiency: any weapon; +1 damage with that kind of weapon",
+    "baker" : "DR 1 vs heat/fire",
+    "chandler" : "DR 1 vs heat/fire",
+    "confectioner" : "DR 1 vs heat/fire",
+    "butcher" : "+1 on attacks with dagger",
+    "tobacconist" : "+1 save vs nausea",
+    "tailor" : "party's cloth goods have +2 on saves",
+    "draper" : "party's cloth goods have +2 on saves",
+    "weaver" : "party's cloth goods have +2 on saves",
+    "furrier" : "party's leather goods have +2 on saves",
+    "tanner" : "party's leather goods have +2 on saves",
+    "leatherworker" : "party's leather goods have +2 on saves",
+    "cobbler" : "party's leather goods have +2 on saves",
+    "cooper" : "party's wooden goods have +2 on saves",
+    "wainwright" : "party's wooden goods have +2 on saves",
+    "shipwright" : "party's wooden goods have +2 on saves",
+    "furniture maker" : "party's wooden goods have +2 on saves",
+    "instrument maker" : "pick an instrument: you can play that instrument. Crafting skill aplies only to this kind of instrument",
+    "potter" : "strong grip gives 5% bonus when climbing",
+    "glassmaker" : "DR 1 vs heat/fire",
+    "glazier" : "DR 1 vs heat/fire",
+    "smelter" : "DR 1 vs heat/fire",
+    "jeweller" : "appraise gems and jewelry within 25% of actual value",
+    "lapidary" : "appraise gems and jewelry within 25% of actual value",
+    "toolmaker" : "appraise metal goods within 25% of actual value",
+    "diemaker" : "appraise metal goods within 25% of actual value",
+    "engraver" : "appraise metal goods within 25% of actual value",
+    "juggler" : "while concentrating, can juggle 3 objects (0.25 to 1.5 lb each); +1 on attacks with thrown weapons",
+    "gambler" : "can palm an unattended or held item (weight <= 2 oz) into sleeve or pocket",
+    "monk" : "+1 natural AC",
+    "rat catcher" : "+1 save vs poison",
+    "grave robber" : "+1 attack vs undead",
+    "drover" : "reduce daily travel damage by 1 point",
+    "alchemist's assistant" : "+1 save vs paralysis",
+    "blacksmith" : "party's metal goods have +2 on saves",
+    "armorer" : "party's armor has +1 on saves",
+    "weaponsmith" : "party's armor has +1 on saves",
+    "mine foreman" : "have Prospecting skill; know direction underground",
+    "trapper" : "have Hunting skill",
+    "hermit" : "have Foraging skill",
+    "tinker" : "have Tinkering skill",
+    "carpenter" : "design wooden structures; party's wooden goods have +2 on saves",
+    "stonemason" : "design stone structures; party's stone goods have +2 on saves",
+    "boatman" : "can handle rowboats and navigate rivers; +1 on checks/saves to keep balance",
+    "gamekeeper" : "+1 attack vs animals; have Hunting skill",
+    "tomb robber" : "possess a magic item",
+    "artillerist" : "gain weapon proficiency with one of: cannon, ballista, catapult, trebuchet",
+    "veterinarian" : "improve recovery of 3 resting animals by +2 HP/day",
+    "hospitaler" : "improve recovery of 2 resting people by +2 HP/day",
+    "bookkeeper" : "have Business Dealing skill",
+    "spy" : "have Passing Through skill",
+    "husbandman" : "have Herding skill",
+    "prospector" : "have Prospecting skill",
+    "herbalist" : "have Floriculture skill",
+    "surgeon's apprentice" : "have Binding Wounds skill",
+    "priest" : "can Turn Undead as if having 5 pts in Dweomercraft",
+    "steward" : "+1 morale for followers and hirelings",
+    "village healer" : "can cast a random 1st level druid or cleric spell",
+    "mortician" : "can embalm corpses; +1 on attacks vs undead",
+    "witch hunter" : "can Turn Undead as if having 10 pts in Dweomercraft; +1 save vs magic",
+    "dancer" : "perform war dance for up to 5 rounds/day; all sighted allies within 60 feet gain +1 attack and morale",
+    "singer" : "sing martial chants for up to 5 rounds/day; all non-deaf allies within 60 feet gain +1 attack and morale",
+    "innkeeper" : "begin game in possession of one-story house currently serving as an inn",
+    "fence" : "have black market connections in nearest market town",
+    "hitman" : "assassinate as a 1st level assassin",
+    "landless noble" : "hold noble title"
+}
+
+
+def profession_effect(c, prof):
+    ownership_roll = randint(1,4)
+    ownership = "these lands belong to you personally" if ownership_roll == 4 else "these lands can only belong to you if both your parents, and any siblings older than you, have died"
+    if prof == "usurer":
+        c.credit += 200 * randint(1,4)
+        return "possess credit"
+    elif prof == "banker":
+        c.credit += 100 * randint(2,4) * randint(2,4)
+        return "possess credit"
+    elif prof == "cavalier" and c.pClass in ["Fighter", "Ranger", "Assassin", "Paladin"]:
+        return "gain bonus weapon proficiency: one of flail, warhammer, or pick"
+    elif prof == "bounty hunter" and p.Class == "Ranger":
+        return "gain bonus weapon proficiency: any missile or throwing weapon"
+    elif prof in all_artisans:
+        result = "create, identify, and repair " + prof + " products " + fixed_results.get(prof,"")
+        if prof in ["bookbinder", "papermaker"]:
+            c.literate = True
+            extended_result = result + "; literacy"
+            return extended_result
+        else:
+            return result
+    elif prof == "laborer":
+        c.encMult += encMult * Decimal(0.05)
+        return "increase max encumbrance by 5%"
+    elif prof == "porter":
+        c.encMult += encMult * Decimal(0.1)
+        return "increase max encumbrance by 10%"
+    elif prof == "explorer":
+        c.literate = True
+        return "literacy; knowledge of a distant region; bonus weapon proficiency with unusual weapon from that region"
+    elif prof == "scribe":
+        c.literate = True
+        return "literacy; gain additional knowledge field",
+    elif prof == "alchemist":
+        c.literate = True
+        return "literacy; have Amateur status in Alchemy"
+    elif prof == "cartographer":
+        c.literate = True
+        return "literacy; have Locate Self skill"
+    elif prof == "architect":
+        c.literate = True
+        return "literacy; design structures; +1 attack and +10% damage if directing artillery fire"
+    elif prof == "lawyer":
+        c.literate = True
+        return "literacy; have Solicitor skill"
+    elif prof == "mage's apprentice":
+        c.literate = True
+        return "literacy; can cast a random 1st level mage or illusionist spell"
+    elif prof == "political advisor":
+        c.literate = True
+        return "literacy; +10% reaction bonus on any group of three or more people; have Functionary skill"
+    elif prof == "spymaster":
+        c.literate = True
+        return "literacy; have Amateur status in Guile study"
+    elif "guildmaster" in prof:
+        c.literate = True
+        # cut out the "guildmaster" part to find out which guild it is
+        x = len("guildmaster ")
+        guild = prof[x:]
+        result = "literacy; " + profession_effect(c, guild)
+        return result
+    elif prof == "tutor":
+        c.literate = True
+        return "literacy; gain additional knowledge field"
+    elif prof == "librarian":
+        c.literate = True
+        return "literacy; gain additional knowledge specialty"
+    elif prof == "professor":
+        c.literate = True
+        return "literacy; gain additional knowledge field and additional specialty within that field"
+    elif prof == "ecclesiastical vicar":
+        c.literate = True
+        return "literacy; +10% reaction with clergymen"
+    elif prof == "ecclesiastial rector":
+        c.literate = True
+        return "literacy; +10% reaction with clergymen; right of free passage throughout this region"
+    elif prof == "landlord":
+        acres = randint(1,8) + randint(1,8) + randint(1,8) + randint(1,8) + randint(1,8)
+        status = choice(["rented out","held by family"])
+        result = "own " + str(acres) + " acres of personal land, which is currently " + status
+        return result
+    elif prof == "buccaneer":
+        GP = 2 * randint(250,500)
+        result = "can handle boats and crew ships; begin game with 25-foot sloop, which requires " + GP + " GP in repairs to be usable"
+        return result
+    elif prof == "squire":
+        acres = (randint(1,4) + randint(1,4)) * 100
+        result = "begin game with " + str(acres) + "-acre estate (640 acres = 1 sq mile)"
+        return result
+    elif prof == "knight":
+        acres = (randint(1,4) + randint(1,4) + randint(1,4)) * 100
+        result = "begin game with " + str(acres) + "-acre estate (640 acres = 1 sq mile)"
+        return result
+    elif prof == "crusader":
+        sqmi = randint(2,4)
+        result = "+1 morale for followers and hirelings; family possesses foreign fief of " + str(sqmi) + " square miles"
+        return result
+    elif prof == "marshal":
+        sqmi = randint(3,8)
+        result = "+1 morale for followers and hirelings; family possesses nearby fief of " + str(sqmi) + " square miles"
+        return result
+    elif prof == "lesser noble":
+        sqmi = randint(1,6) + randint(1,6) + randint(1,6)
+        result = "noble title; +1 morale for followers and hirelings; family possesses fief of " + str(sqmi) + "square miles;" + ownership
+        return result
+    elif prof == "middle noble":
+        sqmi = 10 * (randint(1,4) + randint(1,4))
+        result = "noble title; +2 morale for followers and hirelings; family possesses fief of " + str(sqmi) + "square miles;" + ownership
+        return result
+    elif prof == "greater noble":
+        area = "one map hex (640 sq mi)"
+        result = "noble title; +2 morale for followers and hirelings; family possesses fief of " + area + ";" + ownership
+        return result
+    elif prof == "royalty":
+        r1 = randint(1,4)
+        r2 = 0 if r1 > 1 else randint(1,4)
+        r3 = 0 if r2 > 1 else randint(1,4)
+        r4 = 0 if r3 > 1 else randint(1,4)
+        area = r1 + r2 + r3 + r4
+        result = "royal title; +3 morale for followers and hirelings; family possesses fief of " + str(area) + " map hexes (640 sq mi each); " + ownership
+        return result
+    else:
+        return fixed_results.get(prof, "ask Maxwell")

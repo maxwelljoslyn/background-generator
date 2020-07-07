@@ -1,0 +1,74 @@
+Two rolls, one for Body Beauty and one for Face Beauty.
+
+Face and "personality" beauty ranges:
+-15 and below
+results between: (2-6) inch scar, received (from a blade, from an animal bite, from an animal's claws),
+missing an ear, misshapen nose, misshapen head, 
+-8 to -14
+lazy eye, piggish nose, cracking voice, halitosis, always-runny nose; greasy complexion
+-1 to -7
+bushy eyebrows, large forehead, distinctly large ears, bulbous nose, buck teeth, crooked teeth, acne scars, grating voice, weak chin, eyes which are unnervingly close togther
+0 to 7
+beautiful aquiline nose, attractively straight teeth, clean and healthy complexion; full lips (for girls), strong chin (for men)
+8 to 13
+deep, compelling voice (for men); strong jawline (for me); (throaty, seductive voice (for women); charmingly delicate features (for women); perfectly-shaped and brilliantly-white teeth; marvelous high cheekbones
+14 and above
+rich, velvety voice; dazzling eyes; flawless complexion
+
+The above ranges give characters slightly better odds to be attractive than not.
+
+Body beauty ranges:
+-16 and below
+nasty burns covering (20,80) percent of body
+-13 to -15
+nasty odor; lumpy limbs; (2,6) inch scar across (right/left cheek, forehead, chin, throat, nose); misshapen torso; hunchback
+-8 to -12
+(1,3) inch scar across (right/left hand, right/left arm, right/left cheek, scalp, chin); bow-legged; knock-kneed; moves with an awkward, loping gait; sunken chest
+-1 to -7
+limp; swayback; long torso with stumpy legs; short torso with reedy legs
+0
+(scattered/many/excessive) freckles, (v small/small/large/v large)feet
+1 to 7
+pleasant body odor; well-proportioned legs and arms; elegant neck; healthy hair
+8 to 13:
+(man: wide shoulders; broad back; huge arms; muscular legs)
+(woman: flat belly; thick thighs; narrow waist; curvy hips)
+14 to 17:
+radiant skin; luxurious hair; perfect posture
+
+ALL OF THE ABOVE IMPLEMENTED (WITH SOME CHANGES) AND DEBUGGED AS OF 2016-05-22
+
+
+Genitalia/Sex characteristics:
+I think it's reasonable to generate genitalia information for all characters;
+after all, genitals are important!
+The genitalia/sexual characteristics roll should be independent of the other two rolls,
+giving a 3rd degree of freedom to the whole thing.
+
+A breasts roll:
+shriveled, scrawny
+sagging
+small and knobby
+perfectly ordinary
+small, perky
+large, smooth
+ample, perfect
+
+And one for the penis:
+micropenis (less than 1 inch)
+short and thin (2-3 in) 
+noticeably crooked (4-5)
+thin, reed-like (4-5)
+narrow shaft and large head (3-5)
+perfectly ordinary (5)
+longish (6)
+pleasantly girthy (5-6)
+bulging (6-7)
+tremendous (7-8)
+
+Simply write two separate methods that return a penis detail or a breasts detail, then a method that calls one or the other based on sex, and returns the result. Then can print this "genital detail" after the physical appearance one.
+
+
+There's also the questions of hair, eyes, and skin color. I'll leave skin color aside for now.
+No reason not to write a simple hair and eye generator, but it's LESS IMPORTANT
+than the other characteristics.

@@ -93,7 +93,7 @@ def calcMaxEncumbrance(player):
         proportion = player.weight / baseFemaleWeight
     idealMaxEncumbrance = idealEncumbranceTable[player.Strength]
     unmodifiedMaxEncumbrance = proportion * idealMaxEncumbrance
-    actualMax = unmodifiedMaxEncumbrance * player.maxEncumbrance
+    actualMax = unmodifiedMaxEncumbrance * player.encMult
     return actualMax
 
 def encumbrancePenaltyCutoffs(maxEnc):
@@ -111,9 +111,49 @@ def inchesToFeetInches(arg):
    inches = arg % 12
    return (feet, inches)
 
+
+def function1(a_PC):
+    abilities = [("Strength", a_PC.Strength),
+                 ("Dexterity", a_PC.Dexterity),
+                 ("Constitution", a_PC.Constitution),
+                 ("Intelligence", a_PC.Intelligence),
+                 ("Wisdom", a_PC.Wisdom),
+                 ("Charisma", a_PC.Charisma)]
+    filtered = [(a[0], a[1] - 10) for a in abilities if (a[1] - 10) >= 1]
+    return dict(filtered)
+
+def function2(above_tens):
+    choices = []
+    for name, points in above_tens.items():
+        choices.extend([name] * points)
+    chosen = choice(choices)
+    return (chosen, above_tens[chosen])
+
+def parent_profession(a_PC):
+    above_average_scores = function1(a_PC)
+    if above_average_scores == []:
+    # no character scores above 10
+    # (cannot happen for main PCs, given the "above 15" rule, but can happen for henchmen)
+        return None
+    else:
+        chosen_ability, delta_10 = function2(above_average_scores)
+        if chosen_ability == "Strength":
+            return professionStrength()
+        elif chosen_ability == "Dexterity":
+            return professionDexterity()
+        elif chosen_ability == "Constitution":
+            return professionConstitution()
+        elif chosen_ability == "Wisdom":
+            return professionWisdom()
+        elif chosen_ability == "Intelligence":
+            return professionIntelligence()
+        else:
+            return professionCharisma()
+            
 class PC():
     def __init__(self):
-        pClass = ""
+        self.seed = randint(0,1000000000)
+        self.pClass = ""
         self.Strength = 0
         self.Dexterity = 0
         self.Constitution = 0
@@ -140,15 +180,22 @@ class PC():
         self.hasFamily = True
         self.baseHair = getBaseHairColor()
         self.eyeColor = getEyeColor(self.baseHair)
+        # certain classes and background results will set this to true
+        self.literate = False
+        self.fatherProf = None
+        self.motherProf = None
+
+def writeline(f,text):
+    f.write(text)
+    f.write("\n")
 
 def main():
-    mySeed = randint(0,1000000000)
-    seed(mySeed)
     c = PC()
+    seed(c.seed)
     testing = True
     if testing:
         c.pClass = "Mage"
-        c.Strength, c.Dexterity, c.Wisdom, c.Constitution, c.Intelligence, c.Charisma = 10,10,10,10,10,10
+        c.Strength, c.Dexterity, c.Wisdom, c.Constitution, c.Intelligence, c.Charisma = 12,12,12,12,12,12
         c.sex = "Male"
         c.name = "Foobar"
     else:
@@ -175,16 +222,38 @@ def main():
     # Calculation of background details
     # some of these internally modify other aspects of the Player record
     with open("Characters/" + c.name + ".txt","w") as f:
-        f.write("Seed: " + str(mySeed))
-        f.write("\n")
+        f.write("[seed " + str(c.seed))
+        f.write("]\n\n")
+
+        abis = [("Strength",c.Strength),
+                ("Dexterity",c.Dexterity),
+                 ("Constitution",c.Constitution),
+                 ("Intelligence",c.Intelligence),
+                 ("Wisdom",c.Wisdom),
+                 ("Charisma",c.Charisma)]
+        f.write("Ability scores:\n")
+        for name, stat in abis:
+            dotlength = 10 - len(name)
+            dots = "." * (16 - len(name))
+            f.write("{0}{1}{2}".format(name,dots,stat))
+            f.write("\n")
         f.write("Background for " + c.name + ":")
         f.write("\n\n")
         f.write("Family:")
         f.write("\n")
-        # this detail sets the noFamily flag, so it has to come before interpersonal
+        # this detail sets the hasFamily flag, so it has to come before interpersonal
         familyDetail = detailFamily(advantageMagnitude(c.Strength),c)
         f.write(familyDetail)
         f.write("\n\n")
+
+        f.write("Your father's profession: ")
+        c.fatherProf = parent_profession(c)
+        f.write(str(c.fatherProf))
+        f.write("\n")
+        f.write("Gained from your father: ")
+        f.write(profession_effect(c,c.fatherProf))
+        f.write("\n\n")
+        
 
         f.write("Feats of strength:")
         f.write("\n")
@@ -244,6 +313,15 @@ def main():
         f.write("\n")
         f.write("Eyes: " + c.eyeColor)
         f.write("\n")
+
+        # override any background result which would take literacy away
+        if c.pClass in ["Mage", "Illusionist", "Cleric", "Druid"]:
+            c.literate = True
+        if c.literate:
+            f.write("Literate: Yes\n")
+        else:
+            f.write("Literate: No\n")
+        
         baseMoney = Decimal(20) + Decimal(randint(2,6) * 10)
         actualMoney = baseMoney * c.moneyMult
         f.write("Starting money: " + str(actualMoney) + " gold pieces")
