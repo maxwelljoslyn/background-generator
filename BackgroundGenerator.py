@@ -2,6 +2,10 @@ from random import *
 from decimal import *
 from Details import *
 from math import floor
+from pathlib import Path
+
+# 2021-08-15 asssign NAMES to the family members o h thats a splendid idea!
+# and draw up a rudimentary family tree!!!!
 
 import MageSpells
 
@@ -12,37 +16,57 @@ def advantageMagnitude(abiScore):
     This results in a value from -17 (worst) to +17 (best),
     which determines the nature of background characteristic granted by this ability score.
 
-todo fixme: the range is assumed to be -17 to 17, but if racial (or other) ability score adjustments are used, they apply to the 3-18 range, making the final score 2-19 or even 1-20 depending on the adjustments used. it is probably hardcoded in many other places that -17/+17 are the edges."""
+todo fixme: the range is assumed to be -17 to 17, but if racial (or other) ability score adjustments are used, the range will be 2-19 or even 1-20 (depending on the adjustments used).
+furthermore it is probably hardcoded in many other places that -17/+17 are the edges."""
     roll = randint(1,20)
     result = abiScore - roll
     return result
 
-def validateSex(sex):
-    sex = sex.lower()
-    if sex == "m" or sex == "male":
+def input_sex():
+    def get_sex():
+        return input("Enter sex:\n").lower()
+    sex = get_sex()
+    males = {"m", "male", "man", "boy"}
+    females = {"f", "female", "woman", "girl"}
+    while sex not in males.union(females):
+        print("Invalid sex.")
+        sex = get_sex()
+    if sex in males:
         return "Male"
-    elif sex == "f" or sex == "female":
+    else:
         return "Female"
-    else:
-        raise ValueError("Sex did not validate.")
 
-def validateScore(score):
-    """An ability score can't be above 18 or below 3."""
-    if score < 3:
-        raise ValueError(str(score) + " is too low.")
-    elif score > 18:
-        raise ValueError(str(score) + " is too high.")
+def input_ability_score(prompt, race="human"):
+    def get_score():
+        return int(input("Enter "+prompt.capitalize()+":\n"))
+    score = get_score()
+    # todo extract this to races.py as racial maximums per stat, based on their modifiers
+    if race == "human":
+        minimum = 3
+        maximum = 18
     else:
-        return score
+        minimum = 2
+        maximum = 19
+    while score < minimum:
+        print(str(score) + " is too low.")
+        score = get_score()
+    while score > maximum:
+        print(str(score) + " is too high.")
+        score = get_score()
+    return score
 
+# todo import these from classes.py
 possibleClassNames = ["fighter","paladin","ranger","cleric","druid","mage","illusionist","thief","assassin","monk"]
 
 
-def validateClass(pClass):
-    if pClass.lower() in possibleClassNames:
-        return pClass.capitalize()
-    else:
-        raise ValueError(pClass + " is not a character class.")
+def input_charclass():
+    def get_charclass():
+        return input("Enter character class:\n").lower()
+    pClass = get_charclass()
+    while pClass not in possibleClassNames:
+        print("Invalid class.")
+        pClass = get_charclass()
+    return pClass.capitalize()
 
 baseStartingAge = {"Fighter":15,"Paladin":19,"Ranger":17,"Cleric":20,"Druid":20,"Mage":22,
                "Illusionist":24,"Thief":17,"Assassin":19,"Monk":22}
@@ -87,6 +111,9 @@ def calcHeightWeight(player):
 
 # area where 18 is hardcoded as max ability score
 idealEncumbranceTable = {strength:(65 + 5 * strength) for strength in range(3,19)}
+# tofix:
+# def ideal_encumbrance(strength) = 65 * (5 * strength)
+# simple full stop
 
 def calcMaxEncumbrance(player):
     proportion = 0
@@ -99,6 +126,8 @@ def calcMaxEncumbrance(player):
     actualMax = unmodifiedMaxEncumbrance * player.encMult
     return actualMax
 
+# 2021-08-15
+# todo redefine as function mapping weights to penalties
 def encumbrancePenaltyCutoffs(maxEnc):
     """Calculate the encumbrance levels at which character suffers reduced Action Points."""
     maxEnc = Decimal(maxEnc)
@@ -115,6 +144,11 @@ def inchesToFeetInches(arg):
    return (feet, inches)
 
 
+# 2021-08-15
+# having e.g. Strength as a field on PC struc
+# is bad. should be a map field within the PC struct
+# with keys being bility enums (strings if you HAVE To but thats dumb)
+# adn values being abi scores
 def function1(a_PC):
     abilities = [("Strength", a_PC.Strength),
                  ("Dexterity", a_PC.Dexterity),
@@ -188,6 +222,8 @@ class PC():
         self.fatherProf = None
         self.motherProf = None
 
+
+
 def writeline(f,text):
     f.write(text)
     f.write("\n")
@@ -198,18 +234,19 @@ def main():
     testing = False
     if testing:
         c.pClass = "Mage"
-        c.Strength, c.Dexterity, c.Wisdom, c.Constitution, c.Intelligence, c.Charisma = 12,12,12,12,12,12
+        c.Strength, c.Dexterity, c.Wisdom, c.Constitution, c.Intelligence, c.Charisma = 12,18,12,12,12,12
         c.sex = "Male"
-        c.name = "Foobar"
+        from datetime import datetime
+        c.name = "Foobar" + datetime.now().isoformat()
     else:
-        c.pClass = validateClass(input("Enter class:\n"))
-        c.Strength = validateScore(int(input("Enter Strength:\n")))
-        c.Dexterity = validateScore(int(input("Enter Dexterity:\n")))
-        c.Constitution = validateScore(int(input("Enter Constitution:\n")))
-        c.Intelligence = validateScore(int(input("Enter Intelligence:\n")))
-        c.Wisdom = validateScore(int(input("Enter Wisdom:\n")))
-        c.Charisma = validateScore(int(input("Enter Charisma:\n")))
-        c.sex = validateSex(input("Enter sex:\n"))
+        c.pClass = input_charclass()
+        c.Strength = input_ability_score("Strength")
+        c.Dexterity = input_ability_score("Dexterity")
+        c.Constitution = input_ability_score("Constitution")
+        c.Intelligence = input_ability_score("Intelligence")
+        c.Wisdom = input_ability_score("Wisdom")
+        c.Charisma = input_ability_score("Charisma")
+        c.sex = input_sex()
         c.name = input("Enter character name:\n")
     
     # base height and weight
@@ -224,7 +261,10 @@ def main():
     
     # Calculation of background details
     # some of these internally modify other aspects of the Player record
-    with open("Characters/" + c.name + ".txt","w") as f:
+    characters_dir = MageSpells.dnd_dir / Path("src/background-generator/Characters")
+    output_file = characters_dir / Path(c.name + ".txt")
+    with open(output_file, "w") as f:
+        # todo: except file not found, f = stndaard out instaed
         f.write("[seed " + str(c.seed))
         f.write("]\n\n")
 
@@ -356,17 +396,17 @@ def main():
             f.write("\n\n")
         f.write("Encumbrance Information:")
         f.write("\n")
-        f.write("When carrying less than or equal to " + str(eNoPen) + " lbs, there is no AP penalty.")
+        f.write("Carried weight <= " + str(eNoPen) + " lbs: no AP penalty.")
         f.write("\n")
-        f.write("Above " + str(eNoPen) + " but less than or equal to " + str(eMin1) + " lbs, AP penalty is -1.")
+        f.write(str(eNoPen) + " lbs < carried weight <= " + str(eMin1) + " lbs: -1 AP.")
         f.write("\n")
-        f.write("Above " + str(eMin1) + " but less than or equal to " + str(eMin2) + " lbs, AP penalty is -2.")
+        f.write(str(eMin1) + " lbs < carried weight <= " + str(eMin2) + " lbs: -2 AP.")
         f.write("\n")
-        f.write("Above " + str(eMin2) + " but less than or equal to " + str(eMin3) + " lbs, AP penalty is -3.")
+        f.write(str(eMin2) + " lbs < carried weight <= " + str(eMin3) + " lbs: -3 AP.")
         f.write("\n")
-        f.write("Above " + str(eMin3) + " but less than or equal to the maximum of " + str(c.maxEncumbrance) + " lbs, AP penalty is -4.")
+        f.write(str(eMin3) + " lbs < carried weight <= " + str(c.maxEncumbrance) + " lbs: -4 AP.")
         f.write("\n")
-        f.write("Above that, no movement is possible, regardless of additional AP.")
+        f.write("Above that, no movement is possible, regardless of remaining AP.")
 
         if c.pClass == "Mage":
             f.write("\n\n")

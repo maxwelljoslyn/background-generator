@@ -1,14 +1,16 @@
 import os
 import random
 import re
+from pathlib import Path
+
+dnd_dir = Path("/Users/maxwelljoslyn/Desktop/projects/dnd/")
 
 def camelCaseToSpaced(name):
     x = re.sub(r'(.)([A-Z][a-z]+)', r'\1 \2',name)
     return re.sub(r'([a-z0-9])([A-Z])',r'\1 \2',x)
 
-basedir =  "/Users/maxwelljoslyn/Desktop/projects/D&D/BackgroundGenerator"
 # switch to spell directory
-firstLevelSpellDirectory = "/Users/maxwelljoslyn/Desktop/projects/D&D/MageSpellDescriptions/Level1/"
+firstLevelSpellDirectory = dnd_dir / Path("before-2021/MageSpellDescriptions/Level1/")
 
 # retrieve and format spell names
 firstLevelSpells = [f for f in os.listdir(firstLevelSpellDirectory) if ".txt" in f and "un~" not in f]

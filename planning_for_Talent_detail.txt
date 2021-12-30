@@ -1,0 +1,1 @@
+the idiot and imbecile results, which take away father/mother legacy, mean that this, the Talent detail, needs to be calculated AFTER the father's skill and legacy are calculated.

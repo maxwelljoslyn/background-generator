@@ -476,7 +476,7 @@ def detailChoices(magnitude, player):
         player.moneyMult *= Decimal(num)
     else:
         title = choice(["an academic degree", "former advisor to the nobility"])
-        result = "Character has gained a title or honor through work done during training: " + title + ". The character adds 1d6 points to one skill within " + poss + " 1st-level focus, representing the knowledge they cultivated to earn the title."
+        result = "Character has gained a title or honor through work done during training: " + title + ". The character adds 2d4 points to one skill within " + poss + " 1st-level focus, representing the knowledge they cultivated to earn the title."
     return result
 
 
@@ -985,8 +985,8 @@ def professionDexterity():
     """Return a Dexterity-based profession."""
     roll = randint(1,100)
     if roll <= 90:
-        group = choice(all_artisans)
-        return choice(group)
+        selected = choice(all_artisans)
+        return selected
     elif roll <= 94:
         return "juggler"
     elif roll <= 98:
@@ -1247,10 +1247,10 @@ def profession_effect(c, prof):
         else:
             return result
     elif prof == "laborer":
-        c.encMult += encMult * Decimal(0.05)
+        c.encMult += Decimal(0.05)
         return "increase max encumbrance by 5%"
     elif prof == "porter":
-        c.encMult += encMult * Decimal(0.1)
+        c.encMult += Decimal(0.1)
         return "increase max encumbrance by 10%"
     elif prof == "explorer":
         c.literate = True
