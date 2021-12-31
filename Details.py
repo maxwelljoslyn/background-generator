@@ -4,6 +4,7 @@ from collections import namedtuple
 
 getcontext().prec = 3
 
+# todo add this as methods on PC class
 def get_gender_words(sex):
     if sex == "Male":
         return ("he","him", "his")
@@ -763,6 +764,7 @@ def birthday(age, current_year=1650):
     # the solution, which I won't do yet, is to use not only the current day,
     # but also the current year
     leap_year = ((birth_year % 4) == 0)
+    # todo this naive formula fails to take into account the quirk of leap years in a year divisible by 100
     if leap_year:
         feb_length = 29
     else:
