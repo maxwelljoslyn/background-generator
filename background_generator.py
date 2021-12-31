@@ -1,13 +1,13 @@
 from random import *
 from decimal import *
-from Details import *
+from details import *
 from math import floor
 from pathlib import Path
 
 # 2021-08-15 asssign NAMES to the family members o h thats a splendid idea!
 # and draw up a rudimentary family tree!!!!
 
-import MageSpells
+import mage_spells
 # 18h = area where 18 (or 3) are hardcoded as limits of PC ability score spectrum (no longer true once races are added)
 
 getcontext().prec = 3
@@ -265,7 +265,7 @@ def main():
     
     # Calculation of background details
     # some of these internally modify other aspects of the Player record
-    characters_dir = MageSpells.dnd_dir / Path("code/background-generator/Characters")
+    characters_dir = mage_spells.dnd_dir / Path("code/background-generator/Characters")
     # todo write to standard out if fail to open file
     output_file = characters_dir / Path(c.name + ".txt")
     with open(output_file, "w") as f:
@@ -416,7 +416,7 @@ def main():
         if c.pClass == "Mage":
             f.write("\n\n")
             f.write("Pick one of these first-level spells:\n")
-            for p in MageSpells.get_pickable_spells(c.Intelligence):
+            for p in mage_spells.get_pickable_spells(c.Intelligence):
                 f.write(p)
                 f.write('\n')
 
