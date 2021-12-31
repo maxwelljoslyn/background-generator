@@ -8,6 +8,7 @@ from pathlib import Path
 # and draw up a rudimentary family tree!!!!
 
 import MageSpells
+# 18h = area where 18 (or 3) are hardcoded as limits of PC ability score spectrum (no longer true once races are added)
 
 getcontext().prec = 3
 
@@ -40,7 +41,7 @@ def input_ability_score(prompt, race="human"):
     def get_score():
         return int(input("Enter "+prompt.capitalize()+":\n"))
     score = get_score()
-    # todo extract this to races.py as racial maximums per stat, based on their modifiers
+    # todo extract this to rules or globals or races.py as racial maximums per stat, based on their modifiers
     if race == "human":
         minimum = 3
         maximum = 18
@@ -55,7 +56,7 @@ def input_ability_score(prompt, race="human"):
         score = get_score()
     return score
 
-# todo import these from classes.py
+# todo import from classes.py
 possibleClassNames = ["fighter","paladin","ranger","cleric","druid","mage","illusionist","thief","assassin","monk"]
 
 
@@ -83,6 +84,7 @@ def getStartingAge(pClass):
         base += randint(1,3)
     return base
 
+# todo update this for races, then move to characters/rules/globals
 baseMaleWeight = Decimal(175) # pounds
 baseMaleHeight = Decimal(70) # inches
 baseFemaleWeight = Decimal(140)
@@ -111,9 +113,8 @@ def calcHeightWeight(player):
 
 # area where 18 is hardcoded as max ability score
 idealEncumbranceTable = {strength:(65 + 5 * strength) for strength in range(3,19)}
-# tofix:
+# todo:
 # def ideal_encumbrance(strength) = 65 * (5 * strength)
-# simple full stop
 
 def calcMaxEncumbrance(player):
     proportion = 0
@@ -147,8 +148,9 @@ def inchesToFeetInches(arg):
 # 2021-08-15
 # having e.g. Strength as a field on PC struc
 # is bad. should be a map field within the PC struct
-# with keys being bility enums (strings if you HAVE To but thats dumb)
-# adn values being abi scores
+# with keys being bility enums (strings if you HAVE To but thats dumb) adn values being abi scores
+# one use case for this: being able to get races['orc']['strength'] modifier and add that to new_pc['abilities']['strength'], with that code generic to all 6 abilities, rather than having to switch on a string 6 times to add to the corrent ability score field (pc.strength, pc.wisdom, etc.)
+# AS USUAL, python inconsistency of data access between dict entries and object fields is an irritation ----- especially in light of fields being a dict under hte hood anyway, IIRC!
 def function1(a_PC):
     abilities = [("Strength", a_PC.Strength),
                  ("Dexterity", a_PC.Dexterity),
@@ -174,6 +176,8 @@ def parent_profession(a_PC):
         return None
     else:
         chosen_ability, delta_10 = function2(above_average_scores)
+        # todo change to {'strength' : professionStrength, 'wisdom' : ...} dictionary, and select within that
+        # in general, prefer map lookups to literal switches -- ie prefer data to imperative code
         if chosen_ability == "Strength":
             return professionStrength()
         elif chosen_ability == "Dexterity":
@@ -189,6 +193,11 @@ def parent_profession(a_PC):
             
 class PC():
     def __init__(self):
+        # todo: distinguish between values/variables used only in character generation, and values which characterize the resulting PC
+        # e.g. moneyMult
+        # this will come into play when *returning a PC object* (whether it's a PC instance, or perhaps utlimately a ditionary) for use in the rest of the game code, storing in database, etc.
+        # eventually there may be no diference (eg why not keep around the "added age" var from prison detail so you always know how long that was?) but at current time no reason to worry those cases
+
         self.seed = randint(0,1000000000)
         self.pClass = ""
         self.Strength = 0

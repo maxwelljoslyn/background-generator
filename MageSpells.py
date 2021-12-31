@@ -3,6 +3,11 @@ import random
 import re
 from pathlib import Path
 
+#todo 
+# randomization in this file should be seeded from variable so easier to write unit tests
+# probably sufficien to pass a seed value to getPickableSpells with default value = random.randint()
+
+# todo move to globals
 dnd_dir = Path("/Users/maxwelljoslyn/Desktop/projects/dnd/")
 
 def camelCaseToSpaced(name):
@@ -18,8 +23,13 @@ firstLevelSpells = [camelCaseToSpaced(s[:-4]) for s in firstLevelSpells]
 
 minimumFirstLevelSpells = 6
 
+# todo refactor the repetition
+# move while len(pickableSpells) ...
 def getPickableSpells(intelligence):
     pickableSpells = []
+    # todo bias: goes thru spells in wahtever order they are put into firstLevelSpells var
+    # all else being equal, spells near end of that order less likely to get chosen
+    # to fix: for s in randomize(firstLevelSpells):
     for s in firstLevelSpells:
         # an Intelligence check
         x = random.randint(1,20)
