@@ -3,11 +3,12 @@ from decimal import *
 from details import *
 from math import floor
 from pathlib import Path
+import mage_spells
+from datetime import datetime
 
 # 2021-08-15 asssign NAMES to the family members o h thats a splendid idea!
 # and draw up a rudimentary family tree!!!!
 
-import mage_spells
 # 18h = area where 18 (or 3) are hardcoded as limits of PC ability score spectrum (no longer true once races are added)
 
 getcontext().prec = 3
@@ -240,7 +241,6 @@ def main():
         c.pClass = "Mage"
         c.Strength, c.Dexterity, c.Wisdom, c.Constitution, c.Intelligence, c.Charisma = 12,18,12,12,12,12
         c.sex = "Male"
-        from datetime import datetime
         c.name = "Foobar" + datetime.now().isoformat()
     else:
         c.pClass = input_charclass()
