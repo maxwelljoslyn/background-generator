@@ -4,18 +4,18 @@ from collections import namedtuple
 
 getcontext().prec = 3
 
-def getGenderWords(sex):
+def get_gender_words(sex):
     if sex == "Male":
         return ("he","him", "his")
     else:
         return ("she","her","her")
 
 # based on Strength
-def detailFeats(magnitude, player):
-    bigPercent = choice([30,40])
-    smallPercent = choice([10,20])
+def detail_feats(magnitude, player):
+    big_percent = choice([30,40])
+    small_percent = choice([10,20])
     result = ""
-    subj, obj, poss = getGenderWords(player.sex)
+    subj, obj, poss = get_gender_words(player.sex)
     if magnitude == -17:
         result = "Weak lungs make it impossible to run."
     elif magnitude <= -14:
@@ -27,15 +27,15 @@ def detailFeats(magnitude, player):
     elif magnitude <= -10:
         result = "One-handed melee weapons must be used two-handed (even daggers); two-handed melee weapons suffer the non-proficiency penalty (if already non-proficient with a given weapon,  add an additional -1 penalty.)"
     elif magnitude <= -9:
-        result = "Encumbrance limits reduced by " + str(bigPercent) + "%."
-        player.encMult = player.encMult - Decimal(0.01 * bigPercent)
+        result = "Encumbrance limits reduced by " + str(big_percent) + "%."
+        player.enc_mult = player.enc_mult - Decimal(0.01 * big_percent)
     elif magnitude <= -8:
         result = "Too weak to draw or load any bow or crossbow."
     elif magnitude <= -7:
         result = "One-handed melee weapons must be used two-handed (except daggers); two-handed melee weapons have a -1 penalty to attack and damage."
     elif magnitude <= -6:
-        result = "Encumbrance limits reduced by " + str(smallPercent) + "%."
-        player.encMult = player.encMult - Decimal(0.01 * smallPercent)
+        result = "Encumbrance limits reduced by " + str(small_percent) + "%."
+        player.enc_mult = player.enc_mult - Decimal(0.01 * small_percent)
     elif magnitude <= -5:
         result = "Too weak to draw a longbow or load a heavy crossbow."
     elif magnitude <= -4:
@@ -53,8 +53,8 @@ def detailFeats(magnitude, player):
     elif magnitude <= 6:
         result = "Character is capable of swimming."
     elif magnitude <= 8:
-        result = "Encumbrance limits increased by " + str(smallPercent) + "%."
-        player.encMult = player.encMult + Decimal(0.01 * smallPercent)
+        result = "Encumbrance limits increased by " + str(small_percent) + "%."
+        player.enc_mult = player.enc_mult + Decimal(0.01 * small_percent)
     elif magnitude <= 9:
         result = "Strong upper body. For slings, bows (not crossbows), and all thrown weapons, increase short range by 1 hex, and medium and long ranges by 2 hexes."
     elif magnitude <= 11:
@@ -67,26 +67,25 @@ def detailFeats(magnitude, player):
         result = "Each day, the first time the character is stunned, after rejoining combat " + subj + " gains hysterical strength. Roll 1d3+1: for 10 rounds, character gains that amount as a bonus to melee attack and damage."
     return result
 
-manAtArmsWeapons = ["dagger","club","quarterstaff","sling"] * 3 + ["shortbow","shortsword","longsword","mace","bastard sword","greatsword"]
-manAtArmsArmor = ["no armor"] * 2 + ["gambeson"] * 4 + ["leather armor"] * 3 + ["studded leather"] * 2 + ["haubergeon"]
+man_at_arms_weapons = ["dagger","club","quarterstaff","sling"] * 3 + ["shortbow","shortsword","longsword","mace","bastard sword","greatsword"]
+man_at_arms_armor = ["no armor"] * 2 + ["gambeson"] * 4 + ["leather armor"] * 3 + ["studded leather"] * 2 + ["haubergeon"]
 
-def manAtArmsEquipment():
-    numWeapons = 1 if randint(1,10) < 7 else 2
-    weapons = sample(manAtArmsWeapons, numWeapons)
-    armor = choice(manAtArmsArmor)
+def man_at_arms_equipment():
+    num_weapons = 1 if randint(1,10) < 7 else 2
+    weapons = sample(man_at_arms_weapons, num_weapons)
+    armor = choice(man_at_arms_armor)
     equipment = namedtuple("equipment",["weapons","armor"])
     return equipment(weapons,armor)
 
-def stringifyManAtArmsEquipment(equipment):
+def stringify_man_at_arms_equipment(equipment):
     return "has " + equipment.armor + "; carries " + ", ".join(equipment.weapons)
 
-def manAtArmsPay():
+def man_at_arms_pay():
     return 4 + randint(1,4) + randint(2,5) + randint(2,5) + randint(2,5)
 
 # based on Wisdom
-def detailInterpersonal(magnitude, player):
-    subj, obj, poss = getGenderWords(player.sex)
-    townDir = choice(["north","south","east","west"])
+def detail_interpersonal(magnitude, player):
+    subj, obj, poss = get_gender_words(player.sex)
     result = ""
     if magnitude == -17:
        result = "The character inadvertently revealed information to the enemy of the land where they are from, enabling that enemy to invade and seize wealth and property. A death sentence has been laid upon the character."
@@ -100,41 +99,41 @@ def detailInterpersonal(magnitude, player):
                   "committed a serious theft, and is being sought to pay restitution and to have a hand chopped off.",
                   "murdered a noble, and is being sought for execution."]
         roll = randint(1,20)
-        resultStart = "Character has "
+        result_start = "Character has "
         if roll <= 3:
-            result = resultStart + crimes[0]
+            result = result_start + crimes[0]
         elif roll <= 7:
-            result = resultStart + crimes[1]
+            result = result_start + crimes[1]
         elif roll <= 11:
-            result = resultStart + crimes[2]
+            result = result_start + crimes[2]
         elif roll <= 14:
-            result = resultStart + crimes[3]
+            result = result_start + crimes[3]
         elif roll <= 18:
-            result = resultStart + crimes[4]
+            result = result_start + crimes[4]
         else: # 19 and 20
-            result = resultStart + crimes[5]
+            result = result_start + crimes[5]
     elif magnitude == -13:
         result = "Character's strange proclivities and morals prevent the character from retaining hirelings for more than a month. Henchmen and followers received from leveling up are not affected."
     elif magnitude <= -11:
         result = "Character is exiled from " + poss + " homeland, and will face a life sentence or execution if they return, although " + poss + " only 'crime' is that of having powerful enemies."
     elif magnitude <= -9:
-       enemyFamilyMember = ["wife"] * 9 + ["daughter"] * 10 + ["mother"] * 1
-       sexCutoff = 1
+       enemy_family_member = ["wife"] * 9 + ["daughter"] * 10 + ["mother"] * 1
+       sex_cutoff = 1
        if player.sex == "Female":
-           sexCutoff = 11
-       enemyReasons = [("foolishly slept with the enemy's " + choice(enemyFamilyMember) + ", making her pregnant."),
+           sex_cutoff = 11
+       enemy_reasons = [("foolishly slept with the enemy's " + choice(enemy_family_member) + ", making her pregnant."),
                        "stole a large sum of money from the enemy, and then lost it.",
                        "destroyed a possession which the enemy held in great personal significance."] 
-       roll = randint(sexCutoff,20)
-       resultStart = "The character is pursued by a sworn enemy, who seeks revenge for the character having "
+       roll = randint(sex_cutoff,20)
+       result_start = "The character is pursued by a sworn enemy, who seeks revenge for the character having "
        if roll <= 10:
-           result = resultStart + enemyReasons[0]
+           result = result_start + enemy_reasons[0]
        elif roll <= 15:
-           result = resultStart + enemyReasons[1]
+           result = result_start + enemy_reasons[1]
        else:
-           result = resultStart + enemyReasons[2]
+           result = result_start + enemy_reasons[2]
     elif magnitude <= -8:
-        if player.hasFamily:
+        if player.has_family:
             result = "Character has been ostracized by " + poss + " family because of " + poss + " poor decisions. The character has no access to any family possessions or talents."
         else:
             result = "Character has been ostracized by " + poss + " mentor because of " + poss + " poor decisions. The character's training was incomplete, so " + subj + " has no weapon proficiencies."
@@ -143,7 +142,7 @@ def detailInterpersonal(magnitude, player):
     elif magnitude == -5:
         result = "Word has spread that the character's word cannot be trusted. " + subj.capitalize() + " will be unable to obtain hirelings or make contracts in this town."
     elif magnitude == -4:
-        if player.hasFamily:
+        if player.has_family:
             result = "Family members strongly dislike the character, and will provide nothing more than a night's lodging, no more than once every every six months."
         else:
             result = "Character's occasional displays of foolishness means that hirelings and followers will take twice as long to earn morale increases for extended service. "
@@ -153,15 +152,15 @@ def detailInterpersonal(magnitude, player):
     elif magnitude == -1:
         result = "The character's conduct has led to " + poss + " being banned from inns and taverns in this town."
     elif magnitude == 0:
-        if player.hasFamily:
+        if player.has_family:
             result = "Family members treat the character as hopeless and without prospects, but will provide lodging. Any brothers and sisters will work as hirelings, but will start with a morale of only 7."
         else:
             result = "Hirelings are made uneasy by character's small-mindedness. Base morale will be 1 point below normal, even if they are gained through this generator."
     elif magnitude == 1:
         sex = choice(["he","she"])
-        result = "Character has made friends with a man-at-arms, who has a morale of 8. " + sex.capitalize() + " " + stringifyManAtArmsEquipment(manAtArmsEquipment()) + ". " + sex.capitalize() + " may be hired now or later; cost is " + str(manAtArmsPay()) + " GP/month."
+        result = "Character has made friends with a man-at-arms, who has a morale of 8. " + sex.capitalize() + " " + stringify_man_at_arms_equipment(man_at_arms_equipment()) + ". " + sex.capitalize() + " may be hired now or later; cost is " + str(man_at_arms_pay()) + " GP/month."
     elif magnitude <= 3:
-        if player.hasFamily:
+        if player.has_family:
             result = "Family members treat the character and " + poss + " friends well, and look forward to news and visits. Brothers, sisters, and cousins will work as hirelings with a starting morale of 9."
         else:
             lover = "daughter"
@@ -169,11 +168,11 @@ def detailInterpersonal(magnitude, player):
                 lover = "son"
             result = "The character is loved by the " + lover + " of an artisan."
     elif magnitude == 4:
-        result = "Character has made friends with two men-at-arms, who have a morale of 9. One, a " + choice(["man","woman"]) + ", " + stringifyManAtArmsEquipment(manAtArmsEquipment()) + "; the other, a " + choice(["man","woman"]) + ", " + stringifyManAtArmsEquipment(manAtArmsEquipment()) + ". Can be hired now or later; wages " + str(manAtArmsPay()) + " and " + str(manAtArmsPay()) + " GP/mo"
+        result = "Character has made friends with two men-at-arms, who have a morale of 9. One, a " + choice(["man","woman"]) + ", " + stringify_man_at_arms_equipment(man_at_arms_equipment()) + "; the other, a " + choice(["man","woman"]) + ", " + stringify_man_at_arms_equipment(man_at_arms_equipment()) + ". Can be hired now or later; wages " + str(man_at_arms_pay()) + " and " + str(man_at_arms_pay()) + " GP/mo"
     elif magnitude == 5:
         result = "Character is well-known and liked around these parts. Can easily obtain as many hirelings as needed (normally each one requires a reaction roll.) Limits based on town size still apply."
     elif magnitude == 6:
-        if player.hasFamily:
+        if player.has_family:
             result = "Character is the family favorite and will receive regular gifts from home. The family will look forward to news and visits, and treat the character's friends well. All family members will work as hirelings, with starting morale of 10."
         else:
             result = "Character has a particularly warm relationship with the mentor who taught " + obj + " class skills. The mentor will help find hirelings or procure items when the character is in town."
@@ -194,7 +193,7 @@ def detailInterpersonal(magnitude, player):
         for i in range(1,num+1):
             enumerator = "the last, a" if i == num else "one "
             sex = choice(["man","woman"])
-            desc = stringifyManAtArmsEquipment(manAtArmsEquipment()) + ": wages " + str(manAtArmsPay()) + " GP/mo"
+            desc = stringify_man_at_arms_equipment(man_at_arms_equipment()) + ": wages " + str(man_at_arms_pay()) + " GP/mo"
             descriptions.append(enumerator + " " + sex + " " + desc)
         result = "Character has made friends with " + str(num) + " men-at-arms, who have a morale of 10. Can be hired now or later. They are as follows:"
         for d in descriptions:
@@ -206,8 +205,8 @@ def detailInterpersonal(magnitude, player):
     return result
 
 # based on Wisdom
-def detailTendency(magnitude, player):
-    subj, obj, poss = getGenderWords(player.sex)
+def detail_tendency(magnitude, player):
+    subj, obj, poss = get_gender_words(player.sex)
     result = ""
     if magnitude == -17:
         num = randint(6,8) * -1
@@ -220,9 +219,9 @@ def detailTendency(magnitude, player):
     elif magnitude == -13:
         result = "Character has an awful temper. If character's weapon breaks or if he or she is hit by friendly fire, a save vs. Magic must be made; otherwise, for 1d4+1 rounds, the character will be -3 to hit, +1 to damage, and unaffected by fear, morale, or attempts to communicate."
     elif magnitude <= -11:
-        weightGain = Decimal(1) + Decimal(randint(15,25) * 0.01)
+        weight_gain = Decimal(1) + Decimal(randint(15,25) * 0.01)
         result = "Gluttony and laziness has caused the character to gain fat."
-        player.weightMult *= weightGain
+        player.weight_mult *= weight_gain
     elif magnitude <= -9:
         result = "Gullibility causes the character to frivolously spend and give away money. Whenever " + subj + " goes to market, if a Wisdom check is not successful, the character will lose 5d4 gold to the likes of confidence men, beggars, and snake-oil salesmen."
     elif magnitude <= -7:
@@ -268,25 +267,25 @@ def detailTendency(magnitude, player):
         result = "Character is very pious. All saves against fear and mind-affecting spells are made with a +" + str(bonus) + " bonus."
     return result
 
-def makeSibling():
-    ageDiff = randint(1,6)
-    sibling = choice(["brother","sister"]) + " who is " + str(ageDiff) + " years " + choice(["older","younger"])
+def make_sibling():
+    age_diff = randint(1,6)
+    sibling = choice(["brother","sister"]) + " who is " + str(age_diff) + " years " + choice(["older","younger"])
     return sibling
 
-def getSiblings(num):
+def get_siblings(num):
     if num == 0:
         return "no siblings"
     else:
         acc = []
         while num > 0:
-            acc.append(makeSibling())
+            acc.append(make_sibling())
             num = num - 1
         res = ", ".join(acc)
         return res
 
 
 grandparents = ["paternal grandfather","paternal grandmother","maternal grandfather","maternal grandmother"]
-def getGrandparents(num):
+def get_grandparents(num):
     if num == 0:
         return "no grandparents"
     if num == 4:
@@ -296,114 +295,114 @@ def getGrandparents(num):
         return res
 
 # based on Strength
-def detailFamily(magnitude,c):
+def detail_family(magnitude,c):
     result = ""
     if magnitude <= -7:
        result = "Orphan. No known relatives."
-       c.hasFamily = False
+       c.has_family = False
     elif magnitude <= -1:
         uncle = randint(0,1)
         aunt = randint(0,1)
         combined = uncle + aunt
-        resultStart = "Few living relations: "
+        result_start = "Few living relations: "
         if uncle == 1 and aunt == 1:
-           result = resultStart + "character has an aunt and uncle."
+           result = result_start + "character has an aunt and uncle."
         elif uncle == 1:
-            result = resultStart + "character has an uncle."
+            result = result_start + "character has an uncle."
         elif aunt == 1:
-            result = resultStart + "character has an aunt."
+            result = result_start + "character has an aunt."
         else:
             roll = randint(2,4)
-            result = resultStart + "character has " + str(roll) + " cousins."
+            result = result_start + "character has " + str(roll) + " cousins."
     elif magnitude == 0:
         relative = choice(["grandparents"] * 3 + ["aunt and uncle"] * 2 + ["grandfather", "grandmother", "aunt", "uncle"])
-        matPat = choice(["on father's side","on mother's side"])
-        raisedBy = relative + " " + matPat
-        numCousins = randint(1,4) + randint(1,4) - 2
-        result = "Character raised by " + (raisedBy) + ". Number of first cousins: " + str(numCousins) + "."
+        mat_pat = choice(["on father's side","on mother's side"])
+        raised_by = relative + " " + mat_pat
+        num_cousins = randint(1,4) + randint(1,4) - 2
+        result = "Character raised by " + (raised_by) + ". Number of first cousins: " + str(num_cousins) + "."
     elif magnitude == 1:
         parent = choice(["father","mother"])
-        hasGrandparent = choice([True,False])
-        if hasGrandparent:
+        has_grandparent = choice([True,False])
+        if has_grandparent:
             grandparent = choice(["paternal","maternal"]) + " " + choice(["grandfather","grandmother"])
         else:
             grandparent = "no grandparents"
-        hasSibling = choice([True,False])
-        if hasSibling:
-            sib = makeSibling()
+        has_sibling = choice([True,False])
+        if has_sibling:
+            sib = make_sibling()
         else:
             sib = "no siblings"
         result = "Character raised by " + parent + ". Has " + grandparent + "; " + sib + "."
     elif magnitude == 2:
         parents = choice(["mother and father","mother and father","mother","father"])
-        grands = getGrandparents(randint(0,1))
-        hasSib = choice([True,False])
-        if hasSib:
-            sib = makeSibling()
+        grands = get_grandparents(randint(0,1))
+        has_sib = choice([True,False])
+        if has_sib:
+            sib = make_sibling()
         else:
             sib = "no siblings"
         result = "Character raised by " + parents + ". Has " + grands + "; " + sib + "."
     elif magnitude <= 4:
-       grands = getGrandparents(randint(0,3)) 
+       grands = get_grandparents(randint(0,3)) 
        numsibs = randint(0,2) + randint(0,2)
-       sibs = getSiblings(numsibs)
+       sibs = get_siblings(numsibs)
        result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 6:
-        grands = getGrandparents(randint(0,4))
+        grands = get_grandparents(randint(0,4))
         numsibs = randint(1,2) + randint(0,2)
-        sibs = getSiblings(numsibs)
+        sibs = get_siblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 8:
-        grands = getGrandparents(randint(1,4))
+        grands = get_grandparents(randint(1,4))
         numsibs = randint(1,2) + randint(0,2)
-        sibs = getSiblings(numsibs)
+        sibs = get_siblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; "
     elif magnitude <= 12:
-        grands = getGrandparents(randint(2,4))
+        grands = get_grandparents(randint(2,4))
         numsibs = randint(1,2) + randint(0,3)
-        sibs = getSiblings(numsibs)
+        sibs = get_siblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     elif magnitude <= 14:
-        grands = getGrandparents(randint(2,4))
+        grands = get_grandparents(randint(2,4))
         numsibs = randint(1,3) + randint(0,3)
-        sibs = getSiblings(numsibs)
+        sibs = get_siblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     else:
-        grands = getGrandparents(randint(2,4))
+        grands = get_grandparents(randint(2,4))
         numsibs = randint(1,3) + randint(1,3)
-        sibs = getSiblings(numsibs)
+        sibs = get_siblings(numsibs)
         result = "Character raised by mother and father. Has " + grands + "; " + sibs + "."
     return result
 
 # based on Intelligence
-def detailChoices(magnitude, player):
-    subj, obj, poss = getGenderWords(player.sex)
+def detail_choices(magnitude, player):
+    subj, obj, poss = get_gender_words(player.sex)
     result = ""
-    whichHalf = choice(["right","left"])
+    which_half = choice(["right","left"])
     if magnitude <= -16:
-        result = "Character is missing lower half of " + whichHalf + " leg, and has a peg leg. One less AP than normal."
+        result = "Character is missing lower half of " + which_half + " leg, and has a peg leg. One less AP than normal."
     elif magnitude <= -14:
         result = "Character is missing left hand. Cannot use two-handed weapons. Can choose hook-hand as a weapon proficiency, but does not start with one to use."
     elif magnitude == -13:
-        result = "Character is missing " + whichHalf + " eye. Ranged weapons have additional attack penalty: -1 at close range, -3 at medium, -5 at long (total: -1/-5/-10)"
+        result = "Character is missing " + which_half + " eye. Ranged weapons have additional attack penalty: -1 at close range, -3 at medium, -5 at long (total: -1/-5/-10)"
     elif magnitude == -12:
         m = randint(1,8) + randint(1,8) + randint(1,8) + randint(1,8)
         result = "Character has spent " + str(m) + " miserable years in prison."
-        player.addedAge += m
+        player.added_age += m
     elif magnitude ==  -11:
         h = randint(1,6) + randint(1,6) + randint(1,6)
         result = "Character has spent " + str(h) + " hard years in prison."
-        player.addedAge += h
+        player.added_age += h
     elif magnitude == -10:
         p = randint(1,4) + randint(1,4)
         result = "Character has spent " + str(p) + " years in prison."
-        player.addedAge += p
+        player.added_age += p
     elif magnitude == -9:
         num = randint(1,3)
-        result = "Missing " + str(num) + " fingers on " + whichHalf + " hand. -2 on attack rolls when using that hand (including two-handed weapons.)"
+        result = "Missing " + str(num) + " fingers on " + which_half + " hand. -2 on attack rolls when using that hand (including two-handed weapons.)"
     elif magnitude == -8:
         num = randint(2,3)
-        result = "Missing " + str(num) + " toes on " + whichHalf + " foot. -1 penalty on all Dexterity checks involving the feet."
+        result = "Missing " + str(num) + " toes on " + which_half + " foot. -1 penalty on all Dexterity checks involving the feet."
     elif magnitude == -7:
         months = randint(3,9)
         if player.sex == "Male":
@@ -412,42 +411,42 @@ def detailChoices(magnitude, player):
             result = "Character is pregnant and " + str(months) + " months along."
     elif magnitude == -6:
         result = "Character has been swindled of all money and possessions, leaving " + obj + " with only a shirt."
-        player.moneyMult = Decimal(0)
+        player.money_mult = Decimal(0)
     elif magnitude == -5:
         result = "Trust and generosity to family or others has left the character with little money."
-        player.moneyMult = player.moneyMult * Decimal(0.3)
+        player.money_mult = player.money_mult * Decimal(0.3)
     elif magnitude == -4:
-        numCigs = randint(1,4)
-        gramsPerOz = Decimal(28.3495)
+        num_cigs = randint(1,4)
+        grams_per_oz = Decimal(28.3495)
         # grams per cigar, converted to oz to measure pipe tobacco
-        tobacco = numCigs * Decimal(2.5) / gramsPerOz
-        numBeers = randint(1,4)
-        isCig = choice([True,False])
+        tobacco = num_cigs * Decimal(2.5) / grams_per_oz
+        num_beers = randint(1,4)
+        is_cig = choice([True,False])
         consequence = "until the addiction is fed each day, the character's Wisdom will be treated as 50% normal, and other ability scores will be treated as 90% normal."
-        if isCig:
-            result = "Character is addicted to " + str(round(numCigs)) + " cigar(s) per day (or " + str(round(tobacco,2)) + " oz pipe tobacco); " + consequence
+        if is_cig:
+            result = "Character is addicted to " + str(round(num_cigs)) + " cigar(s) per day (or " + str(round(tobacco,2)) + " oz pipe tobacco); " + consequence
         else:
-            result = "Character is addicted to " + str(numBeers) + " beer(s) per day; " + consequence
+            result = "Character is addicted to " + str(num_beers) + " beer(s) per day; " + consequence
     elif magnitude == -3:
         if player.sex == "Male":
             p = "fathered"
         else:
             p = "mothered"
-        kidGender = choice(["son","daughter"])
-        result = "Character has " + p + " a bastard child, a " + kidGender + ". If character has family, child is in their care; otherwise child was given up as a foundling, and its whereabouts are unknown."
+        kid_gender = choice(["son","daughter"])
+        result = "Character has " + p + " a bastard child, a " + kid_gender + ". If character has family, child is in their care; otherwise child was given up as a foundling, and its whereabouts are unknown."
     elif magnitude == -2:
         result = "Gambling, waste, and foolishness has lost the character half " + poss + " money."
-        player.moneyMult = player.moneyMult * Decimal(0.5)
+        player.money_mult = player.money_mult * Decimal(0.5)
     elif magnitude == -1:
         years = randint(2,5)
         result = "A misspent youth cost the character " + str(years) + " extra years to finish training."
-        player.addedAge += years
+        player.added_age += years
     elif magnitude == 0:
         scar = randint(3,8)
         result = "Character has a " + str(scar) + "-inch scar on a normally-covered part of " + poss + " body, received as a child during a moment of pure stupidity."
     elif magnitude <= 2:
         result = "Good luck has slightly increased the character's money."
-        player.moneyMult *= Decimal(2)
+        player.money_mult *= Decimal(2)
     elif magnitude <= 4:
         result = "Ability to play a musical instrument of the player's choosing."
     elif magnitude == 5:
@@ -455,7 +454,7 @@ def detailChoices(magnitude, player):
         result = "Distinguished effort has earned a writ of passage, free of tolls, between this kingdom and the nearest one to the " + dir + "."
     elif magnitude <= 7:
         result = "Prudence and savings have significantly increased the character's money."
-        player.moneyMult *= Decimal(3)
+        player.money_mult *= Decimal(3)
     elif magnitude <= 9:
         credit = (randint(1,6) + randint(1,6) + randint(1,6)) * 50
         player.credit += credit
@@ -463,17 +462,17 @@ def detailChoices(magnitude, player):
     elif magnitude <= 11:
         num = randint(4,6)
         result = "Prudence and savings have greatly increased the character's money."
-        player.moneyMult *= Decimal(num)
+        player.money_mult *= Decimal(num)
     elif magnitude <= 13:
         num = randint(6,9)
         result = "Diligent effort has hugely increased the character's money."
-        player.moneyMult *= Decimal(num)
+        player.money_mult *= Decimal(num)
     elif magnitude == 14:
         result = "Character possesses a magic item."
     elif magnitude <= 16:
         num = randint(9,12)
         result = "Smart and frugal behavior has grown the character's money to an incredible degree."
-        player.moneyMult *= Decimal(num)
+        player.money_mult *= Decimal(num)
     else:
         title = choice(["an academic degree", "former advisor to the nobility"])
         result = "Character has gained a title or honor through work done during training: " + title + ". The character adds 2d4 points to one skill within " + poss + " 1st-level focus, representing the knowledge they cultivated to earn the title."
@@ -481,34 +480,34 @@ def detailChoices(magnitude, player):
 
 
 # based on Charisma, requires two magnitude rolls 
-def detailBeauty(faceMag, bodyMag, player):
+def detail_beauty(face_mag, body_mag, player):
     # to be added on to
-    subj, obj, poss = getGenderWords(player.sex)
-    def faceBeauty():
-        whichSide = choice(["right","left"])
-        if faceMag <= -15:
-            scarLength = randint(3,7)
-            scarType = choice(["a blade", "an animal bite", "an animal's claws"])
-            scar = "has " + str(scarLength) + "-inch scar across the face, received from " + scarType
-            choices = [scar,"is missing " + poss + " " + whichSide + " ear","is missing " + poss + " nose","has a distinctly misshapen head"]
+    subj, obj, poss = get_gender_words(player.sex)
+    def face_beauty():
+        which_side = choice(["right","left"])
+        if face_mag <= -15:
+            scar_length = randint(3,7)
+            scar_type = choice(["a blade", "an animal bite", "an animal's claws"])
+            scar = "has " + str(scar_length) + "-inch scar across the face, received from " + scar_type
+            choices = [scar,"is missing " + poss + " " + which_side + " ear","is missing " + poss + " nose","has a distinctly misshapen head"]
             return choice(choices)
-        elif faceMag <= -8:
-            choices = ["has a lazy " + whichSide + " eye","has a whiny, irritating voice","has a crackly, annoying voice","suffers from halitosis if teeth are not brushed 3 times daily","has an always-runny nose","has a greasy, oily face"]
+        elif face_mag <= -8:
+            choices = ["has a lazy " + which_side + " eye","has a whiny, irritating voice","has a crackly, annoying voice","suffers from halitosis if teeth are not brushed 3 times daily","has an always-runny nose","has a greasy, oily face"]
             return choice(choices)
-        elif faceMag <= -1:
-            noseProblem = choice(["bulbous","squashed","piggish"])
-            missingTeeth = randint(0,1) + randint(1,3)
-            teethProblem = choice(["buck","crooked",str(missingTeeth) + " missing"])
-            choices = ["has bushy eyebrows","has a caveman-like protruding brow","has distinctly large ears","has a " + noseProblem + " nose","has " + teethProblem + " teeth","has acne scars","has eyes which are unnervingly close together"]
+        elif face_mag <= -1:
+            nose_problem = choice(["bulbous","squashed","piggish"])
+            missing_teeth = randint(0,1) + randint(1,3)
+            teeth_problem = choice(["buck","crooked",str(missing_teeth) + " missing"])
+            choices = ["has bushy eyebrows","has a caveman-like protruding brow","has distinctly large ears","has a " + nose_problem + " nose","has " + teeth_problem + " teeth","has acne scars","has eyes which are unnervingly close together"]
             return choice(choices)
-        elif faceMag <= 7:
+        elif face_mag <= 7:
             choices = ["has a beautiful aquiline nose","has attractively straight teeth","has a clean and healthy complexion"]
             if player.sex == "Male":
                 choices = choices + ["has a strong chin"]
             else:
                 choices = choices + ["has lovely full lips"]
             return choice(choices)
-        elif faceMag <= 13:
+        elif face_mag <= 13:
             choices = ["perfectly-shaped, brilliantly white teeth","marvelous high cheekbones"]
             if player.sex == "Male":
                 choices = choices + ["a deep, compelling voice","a strong jawline"]
@@ -519,36 +518,36 @@ def detailBeauty(faceMag, bodyMag, player):
             choices = ["has a rich, velvety voice","has dazzling eyes","has a flawless complexion"]
             return choice(choices)
 
-    def bodyBeauty():
-        # redefine whichSide so it can be different for face and body results
-        whichSide = choice(["right","left"])
-        if bodyMag <= -16:
-            burnPercent = randint(20,80)
-            return "has nasty burn scars covering " + str(burnPercent) + "% of " + poss + " body"
-        elif bodyMag <= -14:
-            scarLength = randint(2,6)
-            scarPlace = choice([whichSide + " cheek","chin","throat","nose","forehead"])
-            scar = "has a " + str(scarLength) + "-inch scar across " + poss + " " + scarPlace
+    def body_beauty():
+        # redefine which_side so it can be different for face and body results
+        which_side = choice(["right","left"])
+        if body_mag <= -16:
+            burn_percent = randint(20,80)
+            return "has nasty burn scars covering " + str(burn_percent) + "% of " + poss + " body"
+        elif body_mag <= -14:
+            scar_length = randint(2,6)
+            scar_place = choice([which_side + " cheek","chin","throat","nose","forehead"])
+            scar = "has a " + str(scar_length) + "-inch scar across " + poss + " " + scar_place
             choices = [scar, "gives off a nasty, unwashable odor","has lumpy limbs","has a misshapen torso","is a hunchback"]
             return choice(choices)
-        elif bodyMag <= -8:
-            scarLength = randint(1,3)
-            scarPlace = choice([whichSide + " arm",whichSide + " hand","scalp","chin"])
-            scar = "has a " + str(scarLength) + "-inch scar across " + poss + " " + scarPlace
+        elif body_mag <= -8:
+            scar_length = randint(1,3)
+            scar_place = choice([which_side + " arm",which_side + " hand","scalp","chin"])
+            scar = "has a " + str(scar_length) + "-inch scar across " + poss + " " + scar_place
             choices = [scar,"is bow-legged","is knock-kneed","moves with an awkward, loping gait","has a sunken chest"]
             return choice(choices)
-        elif bodyMag <= -1:
-            choices = ["has a weak " + whichSide + " leg and walks with a pronounced limp","has a swayback","has a overlong torso with stumpy legs","has a stumpy torso with overlong legs"]
+        elif body_mag <= -1:
+            choices = ["has a weak " + which_side + " leg and walks with a pronounced limp","has a swayback","has a overlong torso with stumpy legs","has a stumpy torso with overlong legs"]
             return choice(choices)
-        elif bodyMag == 0:
-            footKind = choice(["very small feet (-5% footwear cost)", "small feet","large feet","very large feet (+5% footwear cost)"])
-            freckleCount = choice(["scattered","many","excessive"])
-            choices = ["has " + footKind,"has " + freckleCount + " freckles"]
+        elif body_mag == 0:
+            foot_kind = choice(["very small feet (-5% footwear cost)", "small feet","large feet","very large feet (+5% footwear cost)"])
+            freckle_count = choice(["scattered","many","excessive"])
+            choices = ["has " + foot_kind,"has " + freckle_count + " freckles"]
             return choice(choices)
-        elif bodyMag <= 7:
+        elif body_mag <= 7:
             choices = ["gives off a pleasant body odor","has well-proportioned legs and arms","has an elegant neck","has healthy, glossy hair"]
             return choice(choices)
-        elif bodyMag <= 13:
+        elif body_mag <= 13:
             if player.sex == "Male":
                 choices = ["has wide shoulders","has a broad back","has muscular arms","has muscular legs", "has a six-pack"]
             else:
@@ -558,13 +557,13 @@ def detailBeauty(faceMag, bodyMag, player):
             choices = ["has radiant skin","has luxurious hair","always has perfect posture"]
             return choice(choices)
     # putting it all together
-    faceResult = "Character " + faceBeauty()
-    bodyResult = ", and also " + bodyBeauty()
-    result = faceResult + bodyResult + "."
+    face_result = "Character " + face_beauty()
+    body_result = ", and also " + body_beauty()
+    result = face_result + body_result + "."
     return result
 
-# helper for healthDetail
-def getHealthCondition(roll):
+# helper for health_detail
+def get_health_condition(roll):
     # the higher the number, the more severe the condition
     # the idea is to use these with a random roll in the specified range
     if roll <= 2:
@@ -581,8 +580,8 @@ def getHealthCondition(roll):
         return "Muscle pulls: after each combat, character must save vs. paralyzation or suffer a -1 penalty to attacks for 3 days due to a pulled muscle. Multiple occurrences stack up to -3."
     elif roll == 12:
         colors = choice([["red","orange","green"],["blue","purple","black"]])
-        sentenceTail = ", ".join(colors)
-        return "Color confusion: character cannot distinguish between " + sentenceTail + "."
+        sentence_tail = ", ".join(colors)
+        return "Color confusion: character cannot distinguish between " + sentence_tail + "."
     elif roll == 13:
         return "Color blindness: character cannot distinguish between any colors of the spectrum. Everything appears to be in shades of gray."
     elif roll <= 15:
@@ -615,13 +614,13 @@ def getHealthCondition(roll):
         return "Crippled legs: while the character's legs appear whole and undamaged, they are in fact entirely without feeling or strength. The character cannot walk under their own power."
 
 
-def detailHealth(magnitude, player):
-    subj, obj, poss = getGenderWords(player.sex)
+def detail_health(magnitude, player):
+    subj, obj, poss = get_gender_words(player.sex)
     # get 4 health conditions, each with different possibilities of being mild or severe
-    condition4 = getHealthCondition(randint(24,30))
-    condition3 = getHealthCondition(randint(16,24))
-    condition2 = getHealthCondition(randint(8,16))
-    condition1 = getHealthCondition(randint(1,8))
+    condition4 = get_health_condition(randint(24,30))
+    condition3 = get_health_condition(randint(16,24))
+    condition2 = get_health_condition(randint(8,16))
+    condition1 = get_health_condition(randint(1,8))
     result = ""
     if magnitude <= -16:
         result = condition4
@@ -632,8 +631,8 @@ def detailHealth(magnitude, player):
     elif magnitude <= -1:
         result = condition1
     elif magnitude == 0:
-        numDays = randint(7,14)
-        result = "Character is suffering from a severe cold at the start of the campaign. For the next " + str(numDays) + " days, character will be -1 to attack and damage."
+        num_days = randint(7,14)
+        result = "Character is suffering from a severe cold at the start of the campaign. For the next " + str(num_days) + " days, character will be -1 to attack and damage."
     elif magnitude == 1:
         result = "+1 save vs poison."
     elif magnitude == 2:
@@ -667,18 +666,18 @@ def detailHealth(magnitude, player):
     return result
 
 # governed by Dex
-def detailAgility(magnitude, player):
-    subj, obj, poss = getGenderWords(player.sex)
-    whichSide = choice(["right","left"])
+def detail_agility(magnitude, player):
+    subj, obj, poss = get_gender_words(player.sex)
+    which_side = choice(["right","left"])
     result = ""
     if magnitude == -17:
-        result = "Fused bones in the character's " + whichSide + " leg causes a severe, dragging limp. Normal movement is reduced by 2."
+        result = "Fused bones in the character's " + which_side + " leg causes a severe, dragging limp. Normal movement is reduced by 2."
     elif magnitude == -16:
         result = "Character must save vs paralysis before drawing a weapon; failure indicates " + subj + " cannot do it this round. No save is needed for subsequent attempts for the same weapon in the same combat." 
     elif magnitude == -15:
-        result = "Character's " + whichSide + " hand is deformed and useless. Opposite hand is dominant."
+        result = "Character's " + which_side + " hand is deformed and useless. Opposite hand is dominant."
     elif magnitude == -14:
-        result = "Character's " + whichSide + " foot is deformed, and " + subj + " has a permanent limp. Normal movement is reduced by 1."
+        result = "Character's " + which_side + " foot is deformed, and " + subj + " has a permanent limp. Normal movement is reduced by 1."
     elif magnitude == -13:
         result = "Character suffers from severe vertigo, and will fall unconscious if " + subj + " is positioned above a drop of 15 or more feet. Once awakened, " + subj + " will be nauseated for 2d4 rounds."
     elif magnitude == -12:
@@ -709,10 +708,10 @@ def detailAgility(magnitude, player):
     elif magnitude == 0:
         num = randint(1,20)
         if num <= 18:
-            howHurt = "maimed"
+            how_hurt = "maimed"
         else:
-            howHurt = "killed"
-        result = "Through accidental clumsiness, the character caused a family member to be " + howHurt + "."
+            how_hurt = "killed"
+        result = "Through accidental clumsiness, the character caused a family member to be " + how_hurt + "."
     elif magnitude == 1:
         result = "Character requires no AP to draw a weapon weighing 2 lbs or less."
     elif magnitude == 2:
@@ -749,100 +748,101 @@ def detailAgility(magnitude, player):
     elif magnitude == 15:
         result = "Character requires no AP to draw any weapon."
     elif magnitude == 16:
-        bodyPart = choice(["hip","shoulder"])
-        result = "Character can dislocate " + poss + " " + whichSide + " " + bodyPart + " at will, though doing so causes 1d4+1 damage."
+        body_part = choice(["hip","shoulder"])
+        result = "Character can dislocate " + poss + " " + which_side + " " + body_part + " at will, though doing so causes 1d4+1 damage."
     else:
         result = "Character can climb poles and free-hanging ropes, and walk tightropes, as if climbing an ordinary wall."
     return result
 
-def birthday(age, currentYear = 1650):
-    birthYear = (currentYear - age) + 1
+def birthday(age, current_year=1650):
+    birth_year = (current_year - age) + 1
     # the addition of 1 year here was supposed to correct so that even if the
     # characters' birthday had already passed this yar, they would still be the right age
     # but it's an off-by-one error making them too old if the birthday hasn't passed yet
     # the opposite error (making them too young) happens if we subtract 1
     # the solution, which I won't do yet, is to use not only the current day,
     # but also the current year
-    leapYear = ((birthYear % 4) == 0)
-    if leapYear:
-        febLength = 29
+    leap_year = ((birth_year % 4) == 0)
+    if leap_year:
+        feb_length = 29
     else:
-        febLength = 28
-    endJanuary = 31
-    endFebruary = febLength + endJanuary
-    endMarch = 31 + endFebruary
-    endApril = 30 + endMarch
-    endMay = 31 + endApril
-    endJune = 30 + endMay
-    endJuly = 31 + endJune
-    endAugust = 31 + endJuly
-    endSeptember = 30 + endAugust
-    endOctober = 31 + endSeptember
-    endNovember = 30 + endOctober
-    endDecember = 31 + endNovember
-    monthEnds = [endJanuary, endFebruary, endMarch, endApril, endMay, endJune, endJuly,
-                 endAugust, endSeptember, endOctober, endNovember, endDecember]
-    monthNames = ["January","February","March","April","May","June","July",
+        feb_length = 28
+    end_january = 31
+    end_february = feb_length + end_january
+    end_march = 31 + end_february
+    end_april = 30 + end_march
+    end_may = 31 + end_april
+    end_june = 30 + end_may
+    end_july = 31 + end_june
+    end_august = 31 + end_july
+    end_september = 30 + end_august
+    end_october = 31 + end_september
+    end_november = 30 + end_october
+    end_december = 31 + end_november
+    month_ends = [end_january, end_february, end_march, end_april, end_may, end_june, end_july,
+                 end_august, end_september, end_october, end_november, end_december]
+    month_names = ["January","February","March","April","May","June","July",
                   "August","September", "October","November","December"]
     # initialize the two-way correspondence between final ordinal day of year,
     # and name of the month whose last day is that day of the year
-    monthRelations = {}
-    for x in range(0,len(monthNames)):
-        n = monthNames[x]
-        end = monthEnds[x]
-        monthRelations[n] = end
-        monthRelations[end] = n
+    month_relations = {}
+    for x in range(0,len(month_names)):
+        n = month_names[x]
+        end = month_ends[x]
+        month_relations[n] = end
+        month_relations[end] = n
 
-    # endDecember is also the number of days in this year
-    dayOfTheYear = randint(1,endDecember)
+    # end_december is also the number of days in this year
+    day_of_the_year = randint(1,end_december)
 
-    birthdayMonthDay = ""
-    for end in monthEnds:
-        if dayOfTheYear <= end:
-            m = monthRelations[end]
-            d = end - dayOfTheYear + 1
+    birthday_month_day = ""
+    for end in month_ends:
+        if day_of_the_year <= end:
+            m = month_relations[end]
+            d = end - day_of_the_year + 1
             # the extra 1 added to d is so that days are number 1 to end, instead of 0 to (end-1)
-            birthdayMonthDay = m + " " + str(d)
+            birthday_month_day = m + " " + str(d)
             break
         else:
             pass
 
-    return birthdayMonthDay
-hairColors = ["black"] * 40 + ["brown"] * 30 + ["blonde"] * 20 + ["red"] * 10
+    return birthday_month_day
 
-def getBaseHairColor():
-    return choice(hairColors)
+hair_colors = ["black"] * 40 + ["brown"] * 30 + ["blonde"] * 20 + ["red"] * 10
 
-def adjustHairColorForAging(baseHairColor, age, constitution):
+def get_base_hair_color():
+    return choice(hair_colors)
+
+def adjust_hair_color_for_aging(base_hair_color, age, constitution):
     aging = randint(1,100)
     hair = namedtuple("hair", ["color","description"])
-    baseCase = hair(baseHairColor,"")
+    base_case = hair(base_hair_color,"")
     if age <= 20:
-        return baseCase
+        return base_case
     elif age <= 29:
         if aging > 7 * constitution:
-            return hair(baseHairColor,"prematurely graying")
+            return hair(base_hair_color,"prematurely graying")
         else:
-            return baseCase
+            return base_case
     elif age <= 39:
         if aging > 6 * constitution:
-            return hair(baseHairColor,"graying")
+            return hair(base_hair_color,"graying")
         else:
-            return baseCase
+            return base_case
     elif age <= 49:
         if aging > 5 * constitution:
-            return hair("gray","was once " + baseHairColor)
+            return hair("gray","was once " + base_hair_color)
         else:
-            return baseCase
+            return base_case
     elif age <= 59:
         if aging > 4 * constitution:
-            return hair("gray", "was once " + baseHairColor)
+            return hair("gray", "was once " + base_hair_color)
         else:
-            return hair(baseHairColor,"graying")
+            return hair(base_hair_color,"graying")
     else:
-        return hair("gray","was once " + baseHairColor)
+        return hair("gray","was once " + base_hair_color)
 
-def hairStatusAfterAging(age, constitution, sex):
+def hair_status_after_aging(age, constitution, sex):
     aging = randint(1,100)
 
     if sex == "Male":
@@ -885,20 +885,20 @@ def hairStatusAfterAging(age, constitution, sex):
                 return ""
     else:
         # sex is Female
-        hairIfMale = hairStatusAfterAging(age - 10, constitution, "Male")
-        if hairIfMale == "bald":
+        hair_if_male = hair_status_after_aging(age - 10, constitution, "Male")
+        if hair_if_male == "bald":
             if aging > 10 * constitution:
                 return "bald"
             else:
                 return "wispy"
         else:
-            return hairIfMale
+            return hair_if_male
 
-def getEyeColor(baseHairColor):
-    if baseHairColor not in hairColors:
+def get_eye_color(base_hair_color):
+    if base_hair_color not in hair_colors:
         raise ValueError("unrecognized hair color")
     score = randint(1,100)
-    if baseHairColor == "black":
+    if base_hair_color == "black":
         if score < 40:
             return "brown"
         elif score < 80:
@@ -906,13 +906,13 @@ def getEyeColor(baseHairColor):
         else:
             return "green"
 
-    elif baseHairColor == "red":
+    elif base_hair_color == "red":
         if score < 50:
             return "green"
         else:
             return "blue"
 
-    elif baseHairColor =="blonde":
+    elif base_hair_color =="blonde":
         if score < 50:
             return "blue"
         elif score < 75:
@@ -921,7 +921,7 @@ def getEyeColor(baseHairColor):
             return "brown"
 
     else:
-        # baseHair is brown
+        # base_hair is brown
         if score < 15:
             return "blue"
         elif score < 35:
@@ -931,16 +931,16 @@ def getEyeColor(baseHairColor):
         else:
             return "black"
 
-def makeFinalHair(baseHair, age, con, sex):
-    hairData = namedtuple("hair",["haircolor","hairdesc","haircond"])
-    hairColorAdj = adjustHairColorForAging(baseHair, age, con)
-    hairLevelAdj = hairStatusAfterAging(age, con, sex)
-    if hairLevelAdj == "bald":
-        return hairData("bald", "was once " + baseHair,"")
+def make_final_hair(base_hair, age, con, sex):
+    hair_data = namedtuple("hair",["haircolor","hairdesc","haircond"])
+    hair_color_adj = adjust_hair_color_for_aging(base_hair, age, con)
+    hair_level_adj = hair_status_after_aging(age, con, sex)
+    if hair_level_adj == "bald":
+        return hair_data("bald", "was once " + base_hair,"")
     else:
-        return hairData(hairColorAdj.color, hairColorAdj.description, hairLevelAdj)
+        return hair_data(hair_color_adj.color, hair_color_adj.description, hair_level_adj)
 
-def professionStrength():
+def profession_strength():
     """Return a Strength-based profession."""
     # roll = min(highest, randint(1,highest) + (2 * delta_10))
     roll = randint(1,100)
@@ -981,7 +981,7 @@ all_artisans.extend(artisans_wood)
 all_artisans.extend(artisans_minerals)
 all_artisans.extend(artisans_metals)
     
-def professionDexterity():
+def profession_dexterity():
     """Return a Dexterity-based profession."""
     roll = randint(1,100)
     if roll <= 90:
@@ -994,7 +994,7 @@ def professionDexterity():
     else:
         return "monk"
 
-def professionConstitution():
+def profession_constitution():
     """Return a Constitution-based profession."""
     roll = randint(1,100)
     if roll <= 5:
@@ -1024,7 +1024,7 @@ def professionConstitution():
     else:
         return "explorer"
 
-def professionIntelligence():
+def profession_intelligence():
     roll = randint(1,100)
     if roll <= 10:
         return "trapper"
@@ -1069,7 +1069,7 @@ def professionIntelligence():
     else:
         return "political advisor"
 
-def professionWisdom():
+def profession_wisdom():
     roll = randint(1,100)
     if roll <= 15:
         return "husbandman"
@@ -1106,7 +1106,7 @@ def professionWisdom():
 # performance_artists = ["mime", "jester", "clown", "monologist"]
 # literary_artists = ["poet", "author"]
     
-def professionCharisma():
+def profession_charisma():
     roll = randint(1,1000)
     if roll <= 450:
         return choice(["dancer","singer"])
@@ -1247,10 +1247,10 @@ def profession_effect(c, prof):
         else:
             return result
     elif prof == "laborer":
-        c.encMult += Decimal(0.05)
+        c.enc_mult += Decimal(0.05)
         return "increase max encumbrance by 5%"
     elif prof == "porter":
-        c.encMult += Decimal(0.1)
+        c.enc_mult += Decimal(0.1)
         return "increase max encumbrance by 10%"
     elif prof == "explorer":
         c.literate = True

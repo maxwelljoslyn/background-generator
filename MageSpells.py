@@ -5,44 +5,44 @@ from pathlib import Path
 
 #todo 
 # randomization in this file should be seeded from variable so easier to write unit tests
-# probably sufficien to pass a seed value to getPickableSpells with default value = random.randint()
+# probably sufficien to pass a seed value to get_pickable_spells with default value = random.randint()
 
 # todo move to globals
 dnd_dir = Path("/Users/maxwelljoslyn/Desktop/projects/dnd/")
 
-def camelCaseToSpaced(name):
+def camel_case_to_spaced(name):
     x = re.sub(r'(.)([A-Z][a-z]+)', r'\1 \2',name)
     return re.sub(r'([a-z0-9])([A-Z])',r'\1 \2',x)
 
 # switch to spell directory
-firstLevelSpellDirectory = dnd_dir / Path("before-2021/MageSpellDescriptions/Level1/")
+first_level_spell_directory = dnd_dir / Path("before-2021/MageSpellDescriptions/Level1/")
 
 # retrieve and format spell names
-firstLevelSpells = [f for f in os.listdir(firstLevelSpellDirectory) if ".txt" in f and "un~" not in f]
-firstLevelSpells = [camelCaseToSpaced(s[:-4]) for s in firstLevelSpells]
+first_level_spells = [f for f in os.listdir(first_level_spell_directory) if ".txt" in f and "un~" not in f]
+first_level_spells = [camel_case_to_spaced(s[:-4]) for s in first_level_spells]
 
-minimumFirstLevelSpells = 6
+minimum_first_level_spells = 6
 
 # todo refactor the repetition
-# move while len(pickableSpells) ...
-def getPickableSpells(intelligence):
-    pickableSpells = []
-    # todo bias: goes thru spells in wahtever order they are put into firstLevelSpells var
+# move while len(pickable_spells) ...
+def get_pickable_spells(intelligence):
+    pickable_spells = []
+    # todo bias: goes thru spells in wahtever order they are put into first_level_spells var
     # all else being equal, spells near end of that order less likely to get chosen
-    # to fix: for s in randomize(firstLevelSpells):
-    for s in firstLevelSpells:
+    # to fix: for s in randomize(first_level_spells):
+    for s in first_level_spells:
         # an Intelligence check
         x = random.randint(1,20)
         if x <= intelligence:
-            pickableSpells.append(s)
-            firstLevelSpells.remove(s)
+            pickable_spells.append(s)
+            first_level_spells.remove(s)
         else:
             pass
     # keep going if there's too few:
-    while len(pickableSpells) < minimumFirstLevelSpells:
-        s = random.choice(firstLevelSpells)
+    while len(pickable_spells) < minimum_first_level_spells:
+        s = random.choice(first_level_spells)
         x = random.randint(1,20)
         if x <= intelligence:
-            pickableSpells.append(s)
-            firstLevelSpells.remove(s)
-    return pickableSpells
+            pickable_spells.append(s)
+            first_level_spells.remove(s)
+    return pickable_spells
