@@ -20,7 +20,7 @@ def detail_feats(magnitude, player):
     if magnitude == -17:
         result = "Weak lungs make it impossible to run."
     elif magnitude <= -14:
-        result = "When stunned, must make save against paralysis to end the stun and rejoin combat."
+        result = "When stunned, must make save against crushing to end the stun and rejoin combat."
     elif magnitude <= -12:
         result = "Character is forever incapable of swimming, regardless of character class or skills."
     elif magnitude <= -11:
@@ -216,9 +216,9 @@ def detail_tendency(magnitude, player):
         num = randint(3,5) * -1
         result = "Character is foolish, ignorant, and superstitious. Saves against fear and mind-affecting spells suffer a " + str(num) + " penalty."
     elif magnitude <= -14:
-        result = "Character is cowardly and lacks confidence. If stunned, a save must be made vs. paralysis, or else the character will avoid all combat, including spellcasting, for 1d4 rounds."
+        result = "Character is cowardly and lacks confidence. If stunned, a save must be made vs. crushing, or else the character will avoid all combat, including spellcasting, for 1d4 rounds."
     elif magnitude == -13:
-        result = "Character has an awful temper. If character's weapon breaks or if he or she is hit by friendly fire, a save vs. Magic must be made; otherwise, for 1d4+1 rounds, the character will be -3 to hit, +1 to damage, and unaffected by fear, morale, or attempts to communicate."
+        result = "Character has an awful temper. If character's weapon breaks or if he or she is hit by friendly fire, a save vs. magic must be made; otherwise, for 1d4+1 rounds, the character will be -3 to hit, +1 to damage, and unaffected by fear, morale, or attempts to communicate."
     elif magnitude <= -11:
         weight_gain = Decimal(1) + Decimal(randint(15,25) * 0.01)
         result = "Gluttony and laziness has caused the character to gain fat."
@@ -241,14 +241,14 @@ def detail_tendency(magnitude, player):
     elif magnitude == 2:
         result = "Character is able to identify the exact time of day, to the half-hour, when out of doors."
     elif magnitude == 3:
-        result = "Character has the ability to counsel others, which will give them a +2 bonus on their next save against addiction, overcaution in combat, or gullibility."
+        result = "Character has the ability to counsel others, which will give them a +2 bonus on their next check/save against addiction, overcaution in combat, or gullibility."
     elif magnitude <= 5:
         result = "The character's good will causes all hirelings and followers within five hexes to have +1 morale."
     elif magnitude == 6:
         xp = randint(6,9) * 50
         result = "If the character's class gives 10% bonus XP for high scores, but the character's scores are not high enough, or if " + poss + " class does not offer that bonus, the character receives 10% bonus XP. If they already qualify for 10% bonus XP, they instead begin adventuring with " + str(xp) + " XP."
     elif magnitude == 7:
-        result = "When the possibility arises, a successful save vs. Poison will reveal to the character the location of a cursed item or location within 50 feet."
+        result = "When the possibility arises, a successful save vs. poison will reveal to the character the location of a cursed item or location within 50 feet."
     elif magnitude <= 9:
         result = "Character can detect secret and concealed doors. Merely passing within 10 feet gives a 1/6 chance to notice it; actively searching an area gives a 2/6 chance."
     elif magnitude == 10:
@@ -574,11 +574,11 @@ def get_health_condition(roll):
     elif roll <= 6:
         return "Low tolerance for alcohol: character takes 1d3 damage for each 8 ounces consumed."
     elif roll <= 8:
-        return "Dry and flaky skin: while armored, character will suffer 1 damage per two hours spent walking or riding."
+        return "Skin chafes easily: while armored, character will suffer 1 damage per two hours spent walking or riding."
     elif roll <= 10:
         return "Weak stomach: character will suffer 1 point of damage per pound of food eaten which is raw or unprocessed."
     elif roll == 11:
-        return "Muscle pulls: after each combat, character must save vs. paralyzation or suffer a -1 penalty to attacks for 3 days due to a pulled muscle. Multiple occurrences stack up to -3."
+        return "Muscle pulls: after each combat, character must save vs. explosion or suffer a -1 penalty to attacks for 3 days due to a pulled muscle. Multiple occurrences stack up to -3."
     elif roll == 12:
         colors = choice([["red","orange","green"],["blue","purple","black"]])
         sentence_tail = ", ".join(colors)
@@ -592,7 +592,7 @@ def get_health_condition(roll):
     elif roll <= 18:
         return "Mild hemorrhaging: if wounded, the character will bleed 1 extra HP per round. If bandages are used, character's wounds must be bound twice in order to stop the bleeding."
     elif roll == 19:
-        return "Shortened breath: character is unable to run for more than two rounds. If any strenuous activity (such as combat) continues for more than 10 rounds, the character must succeed at a save vs. death or else be struck with a coughing spasm, incapacitating them for 1 round (counts as stunned) and causing 3d4 damage."
+        return "Shortened breath: character is unable to run for more than two rounds. If any strenuous activity (such as combat) continues for more than 10 rounds, the character must succeed at a save vs. poison or else be struck with a coughing spasm, incapacitating them for 1 round (counts as stunned) and causing 3d4 damage."
     elif roll == 20:
         return "Brittle bones: all falling damage dice for the character are increased by one step (e.g. d6 -> d8)."
     elif roll == 21:
@@ -606,11 +606,11 @@ def get_health_condition(roll):
     elif roll == 25:
         return "Temporary demonic possession: while talking to strangers, character may suddenly lapse into abusive outbursts. 1 in 20 chance per round."
     elif roll <= 27:
-        return "Weak heart: if reduced to -6 or fewer HP, character must make save vs. death or suffer a heart attack and die."
+        return "Weak heart: if reduced to -6 or fewer HP, character must make save vs. poison or suffer a heart attack and die."
     elif roll == 28:
         return "Severe hemorrhaging: if wounded, the character will bleed 3 extra HP per round. If bandages are used, character's wounds must be bound four times in order to stop the bleeding."
     elif roll == 29:
-        return "Blindness: character cannot see at all, and is altogether unable to sense light. Chief among the consequences is that all attacks are treated as if attacking invisible creatures (-8 normally, -4 if someone spends time helping to direct your strikes) and that all missile/thrown attacks which miss can cause friendly fire, in any direction."
+        return "Blindness: character cannot see at all, and is altogether unable to sense light. Chief among the consequences is that all attacks are treated as if attacking invisible creatures (-8 normally, -6 if someone spends 1 AP/turn helping to direct your strikes) and that all missile/thrown attacks which miss can cause friendly fire, in any direction."
     else:
         return "Crippled legs: while the character's legs appear whole and undamaged, they are in fact entirely without feeling or strength. The character cannot walk under their own power."
 
@@ -637,9 +637,9 @@ def detail_health(magnitude, player):
     elif magnitude == 1:
         result = "+1 save vs poison."
     elif magnitude == 2:
-        result = "+1 save vs paralysis."
+        result = "+1 save vs crushing."
     elif magnitude == 3:
-        result = "+1 save vs death."
+        result = "+1 save vs explosion."
     elif magnitude == 4:
         result = "+1 save vs magic."
     elif magnitude == 5:
@@ -653,9 +653,9 @@ def detail_health(magnitude, player):
     elif magnitude == 9:
         result = "+2 save vs poison."
     elif magnitude == 10:
-        result = "+2 save vs paralysis."
+        result = "+2 save vs crushing."
     elif magnitude == 11:
-        result = "+2 save vs death."
+        result = "+2 save vs explosion."
     elif magnitude == 12:
         result = "+2 save vs magic."
     elif magnitude <= 14:
@@ -674,7 +674,7 @@ def detail_agility(magnitude, player):
     if magnitude == -17:
         result = "Fused bones in the character's " + which_side + " leg causes a severe, dragging limp. Normal movement is reduced by 2."
     elif magnitude == -16:
-        result = "Character must save vs paralysis before drawing a weapon; failure indicates " + subj + " cannot do it this round. No save is needed for subsequent attempts for the same weapon in the same combat." 
+        result = "Character must save vs crushing before drawing a weapon; failure indicates " + subj + " cannot do it this round. No save is needed for subsequent attempts for the same weapon in the same combat." 
     elif magnitude == -15:
         result = "Character's " + which_side + " hand is deformed and useless. Opposite hand is dominant."
     elif magnitude == -14:
@@ -682,7 +682,7 @@ def detail_agility(magnitude, player):
     elif magnitude == -13:
         result = "Character suffers from severe vertigo, and will fall unconscious if " + subj + " is positioned above a drop of 15 or more feet. Once awakened, " + subj + " will be nauseated for 2d4 rounds."
     elif magnitude == -12:
-        result = "Each time the character moves among delicate objects, including in a marketplace, " + subj + " must make a save vs. Paralyzation to avoid accidentally breaking something."
+        result = "Each time the character moves among delicate objects, including in a marketplace, " + subj + " must make a save vs. explosion to avoid accidentally breaking something."
     elif magnitude == -11:
         result = "Character is wholly unable to ride any mount of any kind, regardless of " + poss + " character class."
     elif magnitude == -10:
@@ -737,7 +737,7 @@ def detail_agility(magnitude, player):
         else:
             result = "Character has a 15% chance to notice traps."
     elif magnitude == 12:
-        result = "Character can catch and handle ordinary snakes if " + subj + " successfully saves vs. Poison (with a +4 bonus.)"
+        result = "Character can catch and handle ordinary snakes if " + subj + " successfully saves vs. poison (with a +4 bonus.)"
     elif magnitude == 13:
         num = randint(1,2)
         if num == 1:
@@ -816,7 +816,7 @@ def get_base_hair_color():
     return choice(hair_colors)
 
 def adjust_hair_color_for_aging(base_hair_color, age, constitution):
-    aging = randint(1,100)
+    aging = randint(1,100) # lower is better
     hair = namedtuple("hair", ["color","description"])
     base_case = hair(base_hair_color,"")
     if age <= 20:
@@ -842,10 +842,11 @@ def adjust_hair_color_for_aging(base_hair_color, age, constitution):
         else:
             return hair(base_hair_color,"graying")
     else:
+        # hair is always gray at age 60 and higher
         return hair("gray","was once " + base_hair_color)
 
 def hair_status_after_aging(age, constitution, sex):
-    aging = randint(1,100)
+    aging = randint(1,100) # lower is better
 
     if sex == "Male":
         if age <= 20:
@@ -897,8 +898,6 @@ def hair_status_after_aging(age, constitution, sex):
             return hair_if_male
 
 def get_eye_color(base_hair_color):
-    if base_hair_color not in hair_colors:
-        raise ValueError("unrecognized hair color")
     score = randint(1,100)
     if base_hair_color == "black":
         if score < 40:
@@ -944,7 +943,6 @@ def make_final_hair(base_hair, age, con, sex):
 
 def profession_strength():
     """Return a Strength-based profession."""
-    # roll = min(highest, randint(1,highest) + (2 * delta_10))
     roll = randint(1,100)
     if roll <= 20:
         return "farmer"
@@ -1163,7 +1161,7 @@ fixed_results = {
     "chandler" : "DR 1 vs heat/fire",
     "confectioner" : "DR 1 vs heat/fire",
     "butcher" : "+1 on attacks with dagger",
-    "tobacconist" : "+1 save vs nausea",
+    "tobacconist" : "+1 on checks/saves to stave off nausea (usually saves vs poison)",
     "tailor" : "party's cloth goods have +2 on saves",
     "draper" : "party's cloth goods have +2 on saves",
     "weaver" : "party's cloth goods have +2 on saves",
@@ -1191,7 +1189,7 @@ fixed_results = {
     "rat catcher" : "+1 save vs poison",
     "grave robber" : "+1 attack vs undead",
     "drover" : "reduce daily travel damage by 1 point",
-    "alchemist's assistant" : "+1 save vs paralysis",
+    "alchemist's assistant" : "+1 save vs explosion",
     "blacksmith" : "party's metal goods have +2 on saves",
     "armorer" : "party's armor has +1 on saves",
     "weaponsmith" : "party's armor has +1 on saves",
@@ -1202,7 +1200,7 @@ fixed_results = {
     "carpenter" : "design wooden structures; party's wooden goods have +2 on saves",
     "stonemason" : "design stone structures; party's stone goods have +2 on saves",
     "boatman" : "can handle rowboats and navigate rivers; +1 on checks/saves to keep balance",
-    "gamekeeper" : "+1 attack vs animals; have Hunting skill",
+    "gameaeeper" : "+1 attack vs animals; have Hunting skill",
     "tomb robber" : "possess a magic item",
     "artillerist" : "gain weapon proficiency with one of: cannon, ballista, catapult, trebuchet",
     "veterinarian" : "improve recovery of 3 resting animals by +2 HP/day",
