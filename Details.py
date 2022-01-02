@@ -4,8 +4,11 @@ from collections import namedtuple
 
 getcontext().prec = 3
 
-# todo add this as methods on PC class
+
+
+# todo move this function to globals / rules
 def get_gender_words(sex):
+    # todo account for neuter creatures
     if sex == "Male":
         return ("he","him", "his")
     else:
@@ -435,6 +438,9 @@ def detail_choices(magnitude, player):
             p = "mothered"
         kid_gender = choice(["son","daughter"])
         result = "Character has " + p + " a bastard child, a " + kid_gender + "."
+        # todo prompt player to name the kid - one reason to return a structured result ... then PROCESS that result, including has_family checks, to give the final string...!
+        # todo use he/his she/her instead of "its (whereabouts)"
+        # todo when family has become a data structure, choose a family member to care for the child
         if player.has_family:
             result += " Your family is caring for the child."
         else:
@@ -448,6 +454,7 @@ def detail_choices(magnitude, player):
         player.added_age += years
     elif magnitude == 0:
         scar = randint(3,8)
+        # todo choose where the scar is, or prompt player (or print a "fill in the blank" line!)
         result = "Character has a " + str(scar) + "-inch scar on a normally-covered part of " + poss + " body, received as a child during a moment of pure stupidity."
     elif magnitude <= 2:
         result = "Good luck has slightly increased the character's money."
