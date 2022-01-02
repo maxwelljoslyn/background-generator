@@ -434,7 +434,11 @@ def detail_choices(magnitude, player):
         else:
             p = "mothered"
         kid_gender = choice(["son","daughter"])
-        result = "Character has " + p + " a bastard child, a " + kid_gender + ". If character has family, child is in their care; otherwise child was given up as a foundling, and its whereabouts are unknown."
+        result = "Character has " + p + " a bastard child, a " + kid_gender + "."
+        if player.has_family:
+            result += " Your family is caring for the child."
+        else:
+            result += " You gave the child up as a foundling, and its whereabouts are unknown."
     elif magnitude == -2:
         result = "Gambling, waste, and foolishness has lost the character half " + poss + " money."
         player.money_mult = player.money_mult * Decimal(0.5)
