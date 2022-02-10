@@ -1,0 +1,1 @@
+This repository is outdated. All the code from this background generator is now part of [my D&D monorepo](https://github.com/maxwelljoslyn/dnd); go there for the latest updates, which have been substantial.
